@@ -133,7 +133,8 @@ section{padding:88px 52px;border-top:1px solid var(--border);}
 .pc-tag{font-size:10px;color:var(--ca,var(--accent));letter-spacing:.13em;text-transform:uppercase;margin-bottom:12px;}
 .pc-idx{font-size:11px;color:var(--muted);margin-bottom:4px;}
 .pc-title{font-family:var(--sans);font-size:23px;font-weight:700;letter-spacing:-.4px;line-height:1.15;margin-bottom:12px;}
-.pc-desc{font-size:12px;color:var(--muted);line-height:1.88;margin-bottom:20px;max-width:700px;}
+.pc-desc{font-size:12px;color:var(--muted);line-height:1.88;margin-bottom:12px;max-width:700px;}
+.pc-oneliner{font-size:12px;color:var(--text);font-style:italic;margin-bottom:16px;max-width:700px;opacity:.7;padding-left:12px;border-left:2px solid var(--ca,var(--accent));}
 .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
 .tag{font-size:10px;padding:2px 9px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.05em;}
 .rbadges{display:flex;gap:8px;flex-wrap:wrap;}
@@ -234,6 +235,32 @@ footer b{color:var(--accent);font-weight:400;}
   .orb,.orb2{display:none;}
   footer{padding:20px;flex-direction:column;gap:5px;}
 }
+
+/* ── MUSEUM ──────────────────────────────────────────────── */
+#museum{background:var(--bg);padding-bottom:0 !important;}
+.museum-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--border);}
+.exhibit{position:relative;overflow:hidden;cursor:pointer;background:#080808;border:1px solid rgba(255,255,255,.06);}
+.exhibit::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.012) 0%,transparent 60%);pointer-events:none;z-index:1;}
+.ex-canvas-wrap{width:100%;aspect-ratio:16/10;position:relative;overflow:hidden;transform-origin:center;transition:transform .6s cubic-bezier(.4,0,.2,1);}
+.exhibit:hover .ex-canvas-wrap{transform:scale(1.04);}
+.ex-canvas-wrap canvas{display:block;width:100%;height:100%;}
+.ex-fade{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,8,.98) 0%,rgba(8,8,8,.5) 45%,rgba(8,8,8,.05) 100%);pointer-events:none;z-index:2;}
+.ex-border-top{position:absolute;top:0;left:0;right:0;height:2px;background:var(--ex-c,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.4,0,.2,1);z-index:5;}
+.exhibit:hover .ex-border-top{transform:scaleX(1);}
+.ex-tag{position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 10px;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.3);letter-spacing:.1em;background:rgba(8,8,8,.7);backdrop-filter:blur(8px);z-index:4;text-transform:uppercase;}
+.ex-info{position:absolute;bottom:0;left:0;right:0;padding:20px 22px 22px;z-index:4;}
+.ex-num{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.14em;margin-bottom:6px;text-transform:uppercase;font-family:'JetBrains Mono',monospace;}
+.ex-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:5px;line-height:1;color:#eae8e2;}
+.ex-sub{font-size:11px;color:rgba(255,255,255,.4);line-height:1.55;margin-bottom:14px;max-width:280px;font-family:'JetBrains Mono',monospace;}
+.ex-btns{display:flex;gap:8px;align-items:center;}
+.ex-link{font-size:10px;color:var(--ex-c,var(--accent));letter-spacing:.07em;display:inline-flex;align-items:center;gap:5px;text-decoration:none;border:1px solid;border-color:var(--ex-c,var(--accent));opacity:.5;padding:5px 13px;transition:all .2s;font-family:'JetBrains Mono',monospace;}
+.ex-link:hover{opacity:1;background:var(--ex-c,var(--accent));color:#080808;}
+.museum-link-row{padding:20px 52px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg2);}
+.ml-text{font-size:11px;color:var(--muted);}
+.ml-text strong{color:var(--text);}
+.ml-btn{background:var(--accent);border:none;color:#080808;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:9px 20px;cursor:pointer;letter-spacing:.06em;text-decoration:none;display:inline-block;transition:opacity .2s;}
+.ml-btn:hover{opacity:.85;}
+@media(max-width:900px){.museum-grid{grid-template-columns:1fr;}.museum-link-row{padding:16px 18px;flex-direction:column;gap:10px;align-items:flex-start;}}
 </style>
 </head>
 <body>
@@ -243,7 +270,9 @@ footer b{color:var(--accent);font-weight:400;}
   <a class="logo" href="#hero">MB<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#projects">projects</a></li>
-    <li><a href="#certs">certifications</a></li>
+    <li><a href="#museum">museum</a></li>
+    <li><a href="#why">why</a></li>
+        <li><a href="#certs">certifications</a></li>
     <li><a href="#about">about</a></li>
     <li><a href="#contact">contact</a></li>
   </ul>
@@ -282,7 +311,7 @@ footer b{color:var(--accent);font-weight:400;}
     <span class="chip">DCF Valuation</span>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n" data-target="6">0</div><div class="hstat-l">projects live</div></div>
+    <div class="hstat"><div class="hstat-n" data-target="9">0</div><div class="hstat-l">projects live</div></div>
     <div class="hstat"><div class="hstat-n" data-target="3">0</div><div class="hstat-l">certifications</div></div>
   </div>
   <div class="hscroll">scroll ↓</div>
@@ -304,6 +333,7 @@ footer b{color:var(--accent);font-weight:400;}
         <div class="pc-idx">001</div>
         <h3 class="pc-title">Market Regime Detection Engine</h3>
         <p class="pc-desc">A machine learning model that reads a simulated price chart and labels each day as a bull market, bear market, or high-volatility period. Adjust the sliders to change simulation parameters and watch regimes shift in real time.</p>
+        <p class="pc-oneliner">Reads the market's mood every day — bull, bear, or volatile — the way a trader does after years on the floor.</p>
         <div class="tags"><span class="tag">Hidden Markov Model</span><span class="tag">Geometric Brownian Motion</span><span class="tag">Markov Chains</span><span class="tag">Chart.js</span><span class="tag">Vanilla JS</span></div>
         <div class="rbadges"><span class="rb rb-bull">● BULL</span><span class="rb rb-bear">● BEAR</span><span class="rb rb-vol">● VOLATILE</span></div>
       </div>
@@ -365,6 +395,7 @@ footer b{color:var(--accent);font-weight:400;}
         <div class="pc-idx" style="color:#c084fc">002</div>
         <h3 class="pc-title" style="background:linear-gradient(135deg,#c084fc 0%,#42d9f5 55%,#b5f542 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">RiskLens — Portfolio Risk Engine</h3>
         <p class="pc-desc">A full institutional-grade portfolio risk suite. Input any stocks and weights — get 8 risk metrics, 10,000 Monte Carlo simulations, a probability fan chart, correlation heatmap, and efficient frontier. Every metric explained in plain English.</p>
+        <p class="pc-oneliner">Before you put money in, this tells you exactly how bad the bad days could get.</p>
         <div class="rl-modules">
           <div class="rl-mod"><div class="rl-mod-n" style="color:var(--green)">Module 01</div><div class="rl-mod-title">Risk Analyser</div><div class="rl-mod-desc">Sharpe · Treynor · Alpha · VaR · CVaR · Beta · Max Drawdown</div></div>
           <div class="rl-mod"><div class="rl-mod-n" style="color:var(--blue)">Module 02</div><div class="rl-mod-title">Monte Carlo</div><div class="rl-mod-desc">10,000 simulated futures · percentile fan chart · distribution</div></div>
@@ -437,6 +468,7 @@ footer b{color:var(--accent);font-weight:400;}
         <div class="pc-idx">003</div>
         <h3 class="pc-title">DCF Valuation Model</h3>
         <p class="pc-desc">A complete, interactive discounted cash flow model — full income statement, cash flow statement, balance sheet, WACC build-up, and enterprise value bridge. Every assumption is live-editable. Includes sensitivity tables for WACC vs terminal growth rate and WACC vs revenue growth.</p>
+        <p class="pc-oneliner">A company is worth the cash it'll make you over its lifetime. This model does that maths.</p>
         <div class="tags"><span class="tag">DCF</span><span class="tag">WACC</span><span class="tag">Financial Modelling</span><span class="tag">Chart.js</span><span class="tag">Vanilla JS</span><span class="tag">IB/PE</span></div>
       </div>
       <div class="pc-links">
@@ -485,6 +517,7 @@ footer b{color:var(--accent);font-weight:400;}
         <div class="pc-idx">004</div>
         <h3 class="pc-title">FHS Trading Simulator</h3>
         <p class="pc-desc">A live trading competition platform built for and used at Fountainhead School. Students compete in real-time simulated markets — buying and selling positions, tracking P&L, and competing on a live leaderboard. Built and deployed independently.</p>
+        <p class="pc-oneliner">Built a live stock trading competition for my school. Real stakes, fake money, real lessons.</p>
         <div class="tags"><span class="tag">Web App</span><span class="tag">Firebase</span><span class="tag">Real-time</span><span class="tag">Trading Simulation</span><span class="tag">Leaderboard</span></div>
       </div>
       <div class="pc-links">
@@ -500,6 +533,7 @@ footer b{color:var(--accent);font-weight:400;}
         <div class="pc-idx">005</div>
         <h3 class="pc-title">Monte Carlo Simulator</h3>
         <p class="pc-desc">A live, full-screen portfolio simulator running 200 simultaneous Geometric Brownian Motion paths — each one a possible future. Adjust starting capital, expected return, volatility, and time horizon in real time. Every path draws itself live with a distinct colour. The cyan median cuts through the noise.</p>
+        <p class="pc-oneliner">Nobody knows what the market does next. This runs 200 possible futures so you can see the range.</p>
         <div class="tags"><span class="tag">Monte Carlo</span><span class="tag">Geometric Brownian Motion</span><span class="tag">GBM</span><span class="tag">Simulation</span><span class="tag">Canvas API</span><span class="tag">Vanilla JS</span></div>
       </div>
       <div class="pc-links">
@@ -545,6 +579,7 @@ footer b{color:var(--accent);font-weight:400;}
         <div class="pc-idx">006</div>
         <h3 class="pc-title">Stock Research Kit</h3>
         <p class="pc-desc">A structured 5-step equity research framework that turns Claude into a permanent, hallucination-free stock analyst. Enter a ticker and get every prompt auto-generated — grounded in Peter Lynch and Charlie Munger. Every claim traced to an exact quote from your uploaded filings.</p>
+        <p class="pc-oneliner">Turns Claude into an analyst who's read every filing and won't say a word without a source.</p>
         <div class="tags"><span class="tag">Claude API</span><span class="tag">Prompt Engineering</span><span class="tag">Equity Research</span><span class="tag">Lynch · Munger</span><span class="tag">HTML</span></div>
       </div>
       <div class="pc-links">
@@ -577,10 +612,111 @@ footer b{color:var(--accent);font-weight:400;}
 
 
 
+    <!-- PROJECT 7: EMA CROSSOVER -->
+    <div class="pc r" style="--ca:var(--amber)">
+      <div class="pc-top">
+        <div class="pc-tag">Algorithmic Trading · Backtesting · Technical Analysis</div>
+        <div class="pc-idx">007</div>
+        <h3 class="pc-title">EMA Crossover Backtest</h3>
+        <p class="pc-desc">A full strategy backtest on AAPL 2020–2024. Adjust the fast and slow EMA periods and watch the equity curve, trade log, win rate, max drawdown, and Sharpe update instantly. Every trade is logged with entry, exit, return, and P&L.</p>
+        <p class="pc-oneliner" style="border-left-color:var(--amber)">Tests a simple rule — ride the trend up, exit when it turns — against five years of real AAPL data.</p>
+        <div class="tags"><span class="tag">EMA</span><span class="tag">Backtesting</span><span class="tag">AAPL</span><span class="tag">Win Rate</span><span class="tag">Sharpe</span><span class="tag">Vanilla JS</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:var(--amber)" href="https://manitbhasin6-commits.github.io/EMA-Crossover-Backtest/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:var(--amber)" href="https://github.com/manitbhasin6-commits/EMA-Crossover-Backtest" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:var(--amber);color:var(--amber)">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:var(--amber)"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:var(--amber)">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">Plain English</div>
+            <div class="exp-txt"><p>An Exponential Moving Average gives more weight to recent prices than old ones. When a fast-moving average (reacts quickly) crosses above a slow one (reacts slowly), it signals that momentum is building — so you buy. When it crosses back below, momentum is fading — so you sell. This backtest asks: would that rule have made money on AAPL over the last 5 years?</p></div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">The maths</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:var(--amber)">EMA(t) = Price(t) × k + EMA(t−1) × (1−k)</span><span class="mdef">where k = 2 / (period + 1). More recent prices get exponentially higher weight.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">BUY signal</span><span class="mdef">Fast EMA crosses above Slow EMA — momentum turning positive.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">SELL signal</span><span class="mdef">Fast EMA crosses below Slow EMA — momentum turning negative.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 8: RISK PARITY -->
+    <div class="pc r" style="--ca:#42d9f5">
+      <div class="pc-top">
+        <div class="pc-tag">Portfolio Construction · Asset Allocation · Risk Management</div>
+        <div class="pc-idx">008</div>
+        <h3 class="pc-title">Risk Parity Portfolio</h3>
+        <p class="pc-desc">A portfolio construction tool that weights assets by inverse volatility so every asset contributes an equal share of total portfolio risk. Compare risk parity vs equal weight side by side — weights, risk contributions, and a full asset breakdown table.</p>
+        <p class="pc-oneliner" style="border-left-color:#42d9f5">Most portfolios are secretly 90% stocks risk. This one actually splits the risk equally.</p>
+        <div class="tags"><span class="tag">Risk Parity</span><span class="tag">Inverse Volatility</span><span class="tag">Asset Allocation</span><span class="tag">Diversification</span><span class="tag">Chart.js</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:#42d9f5" href="https://manitbhasin6-commits.github.io/Risk-Parity/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:#42d9f5" href="https://github.com/manitbhasin6-commits/Risk-Parity" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:#42d9f5;color:#42d9f5">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:#42d9f5"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:#42d9f5">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#42d9f5">Plain English</div>
+            <div class="exp-txt"><p>A 60/40 portfolio sounds balanced. But stocks are three times more volatile than bonds — so 90% of the risk is actually coming from the 60% in stocks. Risk Parity fixes this by asking: instead of equal dollar weights, what if every asset contributed the same amount of risk? Lower-volatility assets get bigger positions. Higher-volatility assets get smaller ones. The result is a genuinely balanced portfolio. Ray Dalio's All Weather fund is built on this idea.</p></div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#42d9f5">The maths</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:#42d9f5">w(i) = (1/σ(i)) / Σ(1/σ(j))</span><span class="mdef">Each asset's weight is its inverse volatility as a fraction of the total. Lower vol = higher weight.</span></div>
+              <div class="mrow"><span class="msym" style="color:#42d9f5">Risk Contribution(i) = w(i) × σ(i)</span><span class="mdef">In a true risk parity portfolio, this is equal for every asset.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 9: SHARPE OPTIMIZER -->
+    <div class="pc r" style="--ca:#c084fc">
+      <div class="pc-top">
+        <div class="pc-tag">Portfolio Optimisation · Efficient Frontier · Sharpe Ratio</div>
+        <div class="pc-idx">009</div>
+        <h3 class="pc-title">Sharpe Ratio Optimizer</h3>
+        <p class="pc-desc">Runs thousands of random portfolio weight combinations to find the one with the highest Sharpe Ratio — the Maximum Sharpe (Tangency) Portfolio. Includes a live Sharpe gauge, efficient frontier scatter, optimal vs equal weight bar chart, and full asset breakdown.</p>
+        <p class="pc-oneliner" style="border-left-color:#c084fc">Tries thousands of portfolio combinations and finds the one where the return-to-risk tradeoff is best.</p>
+        <div class="tags"><span class="tag">Sharpe Ratio</span><span class="tag">Efficient Frontier</span><span class="tag">Monte Carlo</span><span class="tag">Tangency Portfolio</span><span class="tag">Chart.js</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:#c084fc" href="https://manitbhasin6-commits.github.io/Sharpe-Optimizer/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:#c084fc" href="https://github.com/manitbhasin6-commits/Sharpe-Optimizer" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:#c084fc;color:#c084fc">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:#c084fc"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:#c084fc">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#c084fc">Plain English</div>
+            <div class="exp-txt"><p>There are infinite ways to split your money between assets. The Sharpe Optimizer tries thousands of them randomly and finds the split that gives you the most return per unit of risk — that's the Maximum Sharpe Portfolio. It sits at the exact point on the efficient frontier where a line from the risk-free rate is tangent to the curve. Every other portfolio is either taking too much risk or leaving return on the table.</p></div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#c084fc">The maths</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:#c084fc">Sharpe = (Rp − Rf) / σp</span><span class="mdef">Return above risk-free rate, divided by portfolio volatility. Higher is better.</span></div>
+              <div class="mrow"><span class="msym" style="color:#c084fc">Maximise: Sharpe(w)</span><span class="mdef">Subject to Σwᵢ = 1, wᵢ ≥ 0. Solved via Monte Carlo random search across thousands of weight combinations.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </section>
 <section id="certs">
-  <div class="sh r"><span class="sn">02</span><h2 class="st">Certifications</h2><div class="sr"></div></div>
+  <div class="sh r"><span class="sn">04</span><h2 class="st">Certifications</h2><div class="sr"></div></div>
   <div class="certs-grid r">
 
     <div class="cert-card">
@@ -637,9 +773,101 @@ footer b{color:var(--accent);font-weight:400;}
   </div>
 </section>
 
+
+<!-- MUSEUM -->
+<section id="museum">
+  <div class="sh r"><span class="sn" style="color:var(--accent)">02</span><h2 class="st">Visual Lab</h2><div class="sr"></div></div>
+  <div class="museum-grid">
+
+    <!-- EXHIBIT A -->
+    <div class="exhibit r" style="--ex-c:#b5f542">
+      <div class="ex-border-top"></div>
+      <div class="ex-canvas-wrap"><canvas id="mc-canvas"></canvas></div>
+      <div class="ex-fade"></div>
+      <div class="ex-tag">live · gbm</div>
+      <div class="ex-info">
+        <div class="ex-num">Exhibit 01</div>
+        <div class="ex-title">Monte Carlo</div>
+        <div class="ex-sub">200 possible futures for your portfolio, running simultaneously</div>
+        <div class="ex-btns">
+          <a class="ex-link" href="https://manitbhasin6-commits.github.io/Monte-Carlo/" target="_blank">Open full tool →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXHIBIT B -->
+    <div class="exhibit r" style="--ex-c:#c084fc">
+      <div class="ex-border-top"></div>
+      <div class="ex-canvas-wrap"><canvas id="regime-canvas"></canvas></div>
+      <div class="ex-fade"></div>
+      <div class="ex-tag">live · hmm</div>
+      <div class="ex-info">
+        <div class="ex-num">Exhibit 02</div>
+        <div class="ex-title" style="color:#c084fc">Market Regime</div>
+        <div class="ex-sub">A model that reads a price chart and labels every day — bull, bear, or volatile</div>
+        <div class="ex-btns">
+          <a class="ex-link" style="color:#c084fc;border-color:#c084fc" href="https://manitbhasin6-commits.github.io/market-regime-detection" target="_blank">Open full tool →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXHIBIT C -->
+    <div class="exhibit r" style="--ex-c:#42d9f5">
+      <div class="ex-border-top"></div>
+      <div class="ex-canvas-wrap"><canvas id="sharpe-canvas"></canvas></div>
+      <div class="ex-fade"></div>
+      <div class="ex-tag">live · frontier</div>
+      <div class="ex-info">
+        <div class="ex-num">Exhibit 03</div>
+        <div class="ex-title" style="color:#42d9f5">Efficient Frontier</div>
+        <div class="ex-sub">Every dot is a portfolio. The glowing one is the best risk-to-return tradeoff</div>
+        <div class="ex-btns">
+          <a class="ex-link" style="color:#42d9f5;border-color:#42d9f5" href="https://manitbhasin6-commits.github.io/Sharpe-Optimizer/" target="_blank">Open full tool →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="museum-link-row r">
+    <div class="ml-text">Want to explore all three tools in full? The <strong>Finance Museum</strong> lets anyone play with these simulations — no maths required.</div>
+    <a class="ml-btn" href="museum.html" target="_blank">Enter the Museum →</a>
+  </div>
+</section>
+<!-- WHY -->
+<section id="why">
+  <div class="sh r"><span class="sn" style="color:var(--blue)">03</span><h2 class="st">Why I Build These</h2><div class="sr"></div></div>
+  <div class="r" style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);">
+
+    <div style="background:var(--bg2);padding:28px 32px;">
+      <div style="font-size:9px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">The starting point</div>
+      <p style="font-size:13px;color:var(--text);line-height:1.95;margin-bottom:14px;">In Grade 10 I interned at <strong>Phoenix Investments</strong> — a forex trading firm. I spent weeks backtesting strategies on gold, watching how real positions are sized, and getting direct exposure to how professional traders think about risk. I came back with a lot of questions and no clean way to answer them.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;">The projects on this site are my attempt to build the tools I wish had existed — things that make financial models interactive, visual, and honest about their assumptions.</p>
+    </div>
+
+    <div style="background:var(--bg2);padding:28px 32px;">
+      <div style="font-size:9px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">The formal side</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;margin-bottom:14px;">I completed Coursera's <strong style="color:var(--text)">Investment Risk Management</strong> and <strong style="color:var(--text)">DCF Modelling</strong> courses and Outskill's <strong style="color:var(--text)">Generative AI Mastermind</strong> — not to collect certificates, but because I wanted the vocabulary to go with the intuition I'd built from real market exposure.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;">Every course I've taken has a corresponding project on this site that tries to go beyond what the syllabus covers.</p>
+    </div>
+
+    <div style="background:var(--bg2);padding:28px 32px;border-top:1px solid var(--border);">
+      <div style="font-size:9px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">At school</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;margin-bottom:14px;">I founded and run my school's <strong style="color:var(--text)">Investment & Trading Club</strong>, host financial literacy sessions for teachers and support staff, and built the <strong style="color:var(--text)">intraschool trading simulation</strong> — the same platform you can see as Project 004 on this site.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;">Teaching something is the fastest way to find out what you don't actually understand about it.</p>
+    </div>
+
+    <div style="background:var(--bg2);padding:28px 32px;border-top:1px solid var(--border);">
+      <div style="font-size:9px;color:var(--blue);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px;">Where it's going</div>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;margin-bottom:14px;">I'm aiming for <strong style="color:var(--text)">UPenn</strong> with the goal of working in quantitative research or investment banking. The projects here are my attempt to demonstrate that interest isn't theoretical — it's been tested against real data, real markets, and real people trying to learn.</p>
+      <p style="font-size:13px;color:var(--muted);line-height:1.95;">Most of what's here is Grade 11 work. I'm just getting started.</p>
+    </div>
+
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="about">
-  <div class="sh r"><span class="sn">03</span><h2 class="st">About</h2><div class="sr"></div></div>
+  <div class="sh r"><span class="sn">05</span><h2 class="st">About</h2><div class="sr"></div></div>
   <div class="about-inner r">
     <p class="ap"><strong>Manit Bhasin</strong>. Grade 11, IB Diploma Programme, India.</p>
     <p class="ap">Interested in quantitative finance and economics — specifically how financial models are constructed and whether they hold up against real data. Most of my projects start from a question I can't find a clean answer to.</p>
@@ -649,7 +877,7 @@ footer b{color:var(--accent);font-weight:400;}
 
 <!-- CONTACT -->
 <section id="contact">
-  <div class="sh r"><span class="sn">04</span><h2 class="st">Contact</h2><div class="sr"></div></div>
+  <div class="sh r"><span class="sn">06</span><h2 class="st">Contact</h2><div class="sr"></div></div>
   <div class="cgrid">
     <div class="r">
       <div class="cbig">Let's<br>talk<span>.</span></div>
@@ -731,6 +959,159 @@ function searchProjects(q){
     card.classList.toggle('hidden',term!==''&&!text.includes(term));
   });
 }
+
+// ── MUSEUM SIMULATIONS ─────────────────────────────────────────────────────
+function randn_m(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+
+// EXHIBIT A — Monte Carlo
+(function(){
+  const cv=document.getElementById('mc-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  let W,H,paths=[],tick=0,started=false;
+  const COLORS=['#b5f542','#42d9f5','#f5a742','#f55f5f','#c084fc','#34d399','#f472b6','#60a5fa','#fbbf24','#a78bfa'];
+  const N=80,STEPS=160;
+  function resize(){W=cv.offsetWidth;H=cv.offsetHeight;cv.width=W;cv.height=H;}
+  function gen(){
+    paths=[];
+    const mu=0.12/252,sig=0.18/Math.sqrt(252);
+    for(let i=0;i<N;i++){
+      const p=[H*0.5];
+      for(let t=1;t<STEPS;t++){const dy=-(mu+sig*randn_m())*H*2.5;p.push(Math.max(H*0.05,Math.min(H*0.95,p[p.length-1]+dy)));}
+      paths.push(p);
+    }
+    tick=1;
+  }
+  function draw(){
+    ctx.fillStyle='rgba(8,8,8,0.22)';ctx.fillRect(0,0,W,H);
+    const T=Math.min(tick,STEPS-1);
+    const stepW=W/STEPS;
+    paths.forEach((p,i)=>{
+      ctx.beginPath();ctx.moveTo(0,p[0]);
+      for(let t=1;t<=T;t++) ctx.lineTo(t*stepW,p[t]);
+      ctx.strokeStyle=COLORS[i%COLORS.length]+'66';ctx.lineWidth=1.2;ctx.stroke();
+    });
+    if(T>1){
+      ctx.beginPath();ctx.moveTo(0,paths[0][0]);
+      for(let t=1;t<=T;t++){const vals=paths.map(p=>p[t]).sort((a,b)=>a-b);ctx.lineTo(t*stepW,vals[Math.floor(vals.length/2)]);}
+      ctx.strokeStyle='#42d9f5';ctx.lineWidth=2.5;ctx.stroke();
+    }
+    if(tick<STEPS) tick+=2; else gen();
+    requestAnimationFrame(draw);
+  }
+  new IntersectionObserver(([e])=>{if(e.isIntersecting&&!started){started=true;resize();gen();draw();}},{threshold:.2}).observe(cv);
+  window.addEventListener('resize',resize);
+})();
+
+// EXHIBIT B — Market Regime
+(function(){
+  const cv=document.getElementById('regime-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  let W,H,prices=[],regimes=[],tick=0,started=false;
+  const REGIMES=[
+    {mu:0.0008,sig:0.012,color:'rgba(181,245,66,'},
+    {mu:-0.0006,sig:0.016,color:'rgba(245,95,95,'},
+    {mu:0.0001,sig:0.030,color:'rgba(192,132,252,'},
+  ];
+  const NAMES=['BULL','BEAR','VOLATILE'];
+  const STEPS=200;
+  function resize(){W=cv.offsetWidth;H=cv.offsetHeight;cv.width=W;cv.height=H;}
+  function gen(){
+    prices=[50];regimes=[];
+    let regime=0,regTimer=0,regDur=30+Math.floor(Math.random()*40);
+    for(let t=1;t<STEPS;t++){
+      regTimer++;
+      if(regTimer>regDur){regime=Math.floor(Math.random()*3);regTimer=0;regDur=25+Math.floor(Math.random()*45);}
+      const r=REGIMES[regime];
+      const p=prices[prices.length-1]*Math.exp((r.mu-.5*r.sig*r.sig)+r.sig*randn_m());
+      prices.push(Math.max(5,p));regimes.push(regime);
+    }
+    tick=1;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const T=Math.min(tick,STEPS-1);
+    const stepW=W/STEPS;
+    const minP=Math.min(...prices.slice(0,T+1));
+    const maxP=Math.max(...prices.slice(0,T+1));
+    const toY=v=>H*0.1+(H*0.8)*(maxP-v)/(maxP-minP||1);
+    let start=0,cur=regimes[0];
+    for(let t=1;t<=T;t++){
+      if(regimes[t]!==cur||t===T){
+        ctx.fillStyle=REGIMES[cur].color+'0.07)';
+        ctx.fillRect(start*stepW,0,(t-start)*stepW,H);
+        start=t;cur=regimes[t];
+      }
+    }
+    ctx.beginPath();ctx.moveTo(0,toY(prices[0]));
+    for(let t=1;t<=T;t++) ctx.lineTo(t*stepW,toY(prices[t]));
+    ctx.strokeStyle='rgba(255,255,255,0.25)';ctx.lineWidth=1;ctx.stroke();
+    for(let t=1;t<=T;t++){
+      ctx.beginPath();ctx.moveTo((t-1)*stepW,toY(prices[t-1]));ctx.lineTo(t*stepW,toY(prices[t]));
+      ctx.strokeStyle=REGIMES[regimes[t]||0].color+'0.9)';ctx.lineWidth=1.8;ctx.stroke();
+    }
+    ctx.font="9px 'JetBrains Mono',monospace";
+    REGIMES.forEach((r,i)=>{ctx.fillStyle=r.color+'0.8)';ctx.fillText('● '+NAMES[i],12,H-30+i*13);});
+    if(tick<STEPS) tick+=2; else setTimeout(gen,1400);
+    requestAnimationFrame(draw);
+  }
+  new IntersectionObserver(([e])=>{if(e.isIntersecting&&!started){started=true;resize();gen();draw();}},{threshold:.2}).observe(cv);
+  window.addEventListener('resize',resize);
+})();
+
+// EXHIBIT C — Efficient Frontier
+(function(){
+  const cv=document.getElementById('sharpe-canvas');if(!cv)return;
+  const ctx=cv.getContext('2d');
+  let W,H,pts=[],tick=0,best=null,started=false;
+  const ASSETS=[{ret:14,vol:22},{ret:13,vol:20},{ret:11,vol:18},{ret:4,vol:12},{ret:6,vol:15}];
+  const N_PTS=800;
+  function resize(){W=cv.offsetWidth;H=cv.offsetHeight;cv.width=W;cv.height=H;}
+  function randW(n){const w=Array.from({length:n},()=>-Math.log(Math.random()));const s=w.reduce((a,b)=>a+b,0);return w.map(x=>x/s);}
+  function gen(){
+    pts=[];best=null;let bestS=-Infinity;
+    for(let i=0;i<N_PTS;i++){
+      const w=randW(ASSETS.length);
+      const ret=ASSETS.reduce((s,a,j)=>s+w[j]*a.ret,0);
+      const vol=Math.sqrt(ASSETS.reduce((s,a,j)=>s+Math.pow(w[j]*a.vol/100,2),0))*100;
+      const sharpe=(ret-4.3)/vol;
+      pts.push({x:vol,y:ret,s:sharpe});
+      if(sharpe>bestS){bestS=sharpe;best={x:vol,y:ret,s:sharpe};}
+    }
+    tick=0;
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    const T=Math.min(tick,pts.length);
+    const minV=Math.min(...pts.map(p=>p.x))-1,maxV=Math.max(...pts.map(p=>p.x))+1;
+    const minR=Math.min(...pts.map(p=>p.y))-1,maxR=Math.max(...pts.map(p=>p.y))+1;
+    const toX=v=>W*0.06+(W*0.88)*(v-minV)/(maxV-minV);
+    const toY=r=>H*0.06+(H*0.88)*(maxR-r)/(maxR-minR);
+    ctx.strokeStyle='rgba(255,255,255,0.04)';ctx.lineWidth=0.5;
+    for(let i=0;i<=4;i++){const y=H*0.06+i*(H*0.88/4);ctx.beginPath();ctx.moveTo(W*0.06,y);ctx.lineTo(W*0.94,y);ctx.stroke();}
+    const maxS=Math.max(...pts.slice(0,T).map(p=>p.s)||[0]);
+    const minS=Math.min(...pts.slice(0,T).map(p=>p.s)||[0]);
+    pts.slice(0,T).forEach(p=>{
+      const t=Math.max(0,(p.s-minS)/(maxS-minS||1));
+      ctx.beginPath();ctx.arc(toX(p.x),toY(p.y),2.2,0,Math.PI*2);
+      ctx.fillStyle="rgba("+Math.round(192*t+30*(1-t))+","+Math.round(132*t+30*(1-t))+","+Math.round(252*t+30*(1-t))+","+(0.2+t*0.7)+")";
+      ctx.fill();
+    });
+    if(best&&T>200){
+      const bx=toX(best.x),by=toY(best.y);
+      const pulse=(Math.sin(Date.now()*0.004)+1)/2;
+      ctx.beginPath();ctx.arc(bx,by,10+pulse*5,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,0.12)';ctx.fill();
+      ctx.beginPath();ctx.arc(bx,by,5,0,Math.PI*2);ctx.fillStyle='#c084fc';ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.45)';ctx.font="9px 'JetBrains Mono',monospace";ctx.textAlign='center';
+      ctx.fillText('MAX SHARPE',bx,by-14);
+    }
+    ctx.fillStyle='rgba(255,255,255,0.18)';ctx.font="9px 'JetBrains Mono',monospace";ctx.textAlign='center';
+    ctx.fillText('← risk →',W/2,H-5);
+    if(tick<pts.length) tick+=5; else setTimeout(gen,2000);
+    requestAnimationFrame(draw);
+  }
+  new IntersectionObserver(([e])=>{if(e.isIntersecting&&!started){started=true;resize();gen();draw();}},{threshold:.2}).observe(cv);
+  window.addEventListener('resize',resize);
+})();
 
 // Scroll reveal
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target);}}),{threshold:.06});
