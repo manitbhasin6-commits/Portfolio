@@ -282,7 +282,7 @@ footer b{color:var(--accent);font-weight:400;}
     <span class="chip">DCF Valuation</span>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n" data-target="5">0</div><div class="hstat-l">projects live</div></div>
+    <div class="hstat"><div class="hstat-n" data-target="6">0</div><div class="hstat-l">projects live</div></div>
     <div class="hstat"><div class="hstat-n" data-target="3">0</div><div class="hstat-l">certifications</div></div>
   </div>
   <div class="hscroll">scroll ↓</div>
@@ -493,11 +493,56 @@ footer b{color:var(--accent);font-weight:400;}
       </div>
     </div>
 
-    <!-- PROJECT 5: STOCK RESEARCH KIT -->
+    <!-- PROJECT 5: MONTE CARLO -->
+    <div class="pc r" style="--ca:#34d399">
+      <div class="pc-top">
+        <div class="pc-tag">Quantitative Finance · Simulation · Visual</div>
+        <div class="pc-idx">005</div>
+        <h3 class="pc-title">Monte Carlo Simulator</h3>
+        <p class="pc-desc">A live, full-screen portfolio simulator running 200 simultaneous Geometric Brownian Motion paths — each one a possible future. Adjust starting capital, expected return, volatility, and time horizon in real time. Every path draws itself live with a distinct colour. The cyan median cuts through the noise.</p>
+        <div class="tags"><span class="tag">Monte Carlo</span><span class="tag">Geometric Brownian Motion</span><span class="tag">GBM</span><span class="tag">Simulation</span><span class="tag">Canvas API</span><span class="tag">Vanilla JS</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:#34d399" href="https://manitbhasin6-commits.github.io/Monte-Carlo/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:#34d399" href="https://github.com/manitbhasin6-commits/Monte-Carlo" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:#34d399;color:#34d399">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:#34d399"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:#34d399">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--blue)">Plain English — what Monte Carlo actually is</div>
+            <div class="exp-txt">
+              <p>Nobody knows what the market will do tomorrow. But if we know roughly how fast something grows on average and how wildly it swings, we can <strong>simulate thousands of possible futures</strong> and see what the range of outcomes looks like. That's Monte Carlo.</p>
+              <p>Each coloured line is one possible future for your portfolio. Some go up a lot, some crash, most end up somewhere in the middle. The more paths you see, the clearer the true probability distribution becomes.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--blue)">The maths — Geometric Brownian Motion</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:var(--blue)">S(t+1) = S(t) × exp((μ − ½σ²) + σ·Z)</span><span class="mdef">Each day's price = yesterday's price multiplied by a random return. Z is a random draw from a normal distribution.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--blue)">μ (drift)</span><span class="mdef">The expected daily return. Set by your annual return input divided by 252 trading days.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--blue)">σ (volatility)</span><span class="mdef">How wildly the price swings each day. Higher σ = wider spread of outcomes = more uncertainty.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--blue)">−½σ² (Itô correction)</span><span class="mdef">A small mathematical adjustment that keeps the expected value correct even with random noise.</span></div>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--blue)">How to read it</div>
+            <div class="steps">
+              <div class="step"><span class="step-n" style="color:var(--blue)">01</span><span class="step-txt"><strong>Cyan line = median path</strong> — the middle outcome. Half of all simulations end above this, half below.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--blue)">02</span><span class="step-txt"><strong>Wide spread = high volatility.</strong> Crank up σ and watch the paths diverge dramatically.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--blue)">03</span><span class="step-txt"><strong>P5 and P95</strong> in the header show the worst 5% and best 5% of outcomes at the current point in time.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--blue)">04</span><span class="step-txt"><strong>Dashed line = starting capital.</strong> Paths above it are in profit, paths below are in loss.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- PROJECT 6: STOCK RESEARCH KIT -->
     <div class="pc r" style="--ca:var(--blue)">
       <div class="pc-top">
         <div class="pc-tag">AI Tools · Equity Research · Framework</div>
-        <div class="pc-idx">005</div>
+        <div class="pc-idx">006</div>
         <h3 class="pc-title">Stock Research Kit</h3>
         <p class="pc-desc">A structured 5-step equity research framework that turns Claude into a permanent, hallucination-free stock analyst. Enter a ticker and get every prompt auto-generated — grounded in Peter Lynch and Charlie Munger. Every claim traced to an exact quote from your uploaded filings.</p>
         <div class="tags"><span class="tag">Claude API</span><span class="tag">Prompt Engineering</span><span class="tag">Equity Research</span><span class="tag">Lynch · Munger</span><span class="tag">HTML</span></div>
@@ -528,6 +573,8 @@ footer b{color:var(--accent);font-weight:400;}
         </div>
       </div>
     </div>
+
+
 
 
   </div>
