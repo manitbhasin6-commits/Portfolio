@@ -66,26 +66,22 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 /* Mouse-tracking gradient spotlight */
 .hero-spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(181,245,66,.04),transparent 55%);transition:background .05s;}
 
-/* Typewriter */
 .eyebrow{font-size:10px;color:var(--accent);letter-spacing:.16em;margin-bottom:16px;opacity:0;animation:up .5s .1s forwards;}
 .eyebrow::before{content:'> ';}
-.hname{font-family:var(--sans);font-size:clamp(48px,8.5vw,118px);font-weight:800;line-height:.86;letter-spacing:-3.5px;}
-.hname-first{display:inline-block;}
-.hname-second{display:block;color:var(--muted);font-weight:400;}
-.tw-cursor{display:inline-block;width:4px;height:.85em;background:var(--accent);vertical-align:middle;margin-left:4px;animation:twblink .7s infinite;}
-@keyframes twblink{0%,100%{opacity:1}50%{opacity:0}}
+.hname{font-family:var(--sans);font-size:clamp(48px,8.5vw,118px);font-weight:800;line-height:.86;letter-spacing:-3.5px;opacity:0;animation:up .65s .22s forwards;}
+.hname .d{color:var(--muted);font-weight:400;}
 .hdesc{max-width:460px;margin-top:26px;font-size:13px;color:var(--muted);line-height:1.95;opacity:0;animation:up .65s .38s forwards;}
 .hchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;opacity:0;animation:up .65s .5s forwards;}
 .chip{font-size:10px;padding:4px 11px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.07em;transition:border-color .2s,color .2s,transform .2s;}
 .chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
 .hscroll{position:absolute;bottom:36px;right:52px;font-size:10px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.12em;opacity:0;animation:up .5s .68s forwards;}
-
-/* Hero stats — animated counters */
+/* Typewriter cursor removed */
+.hname-first{display:inline-block;}
+.hname-second{display:block;color:var(--muted);font-weight:400;}
 .hero-stats{display:flex;gap:40px;margin-top:40px;opacity:0;animation:up .65s .62s forwards;}
 .hstat{display:flex;flex-direction:column;gap:3px;}
 .hstat-n{font-family:var(--sans);font-size:28px;font-weight:800;color:var(--accent);line-height:1;}
 .hstat-l{font-size:10px;color:var(--muted);letter-spacing:.08em;}
-
 @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
 /* SECTIONS */
@@ -94,6 +90,36 @@ section{padding:88px 52px;border-top:1px solid var(--border);}
 .sn{font-size:10px;color:var(--accent);letter-spacing:.12em;flex-shrink:0;}
 .st{font-family:var(--sans);font-size:30px;font-weight:700;letter-spacing:-1px;}
 .sr{flex:1;height:1px;background:var(--border);margin-left:12px;}
+
+/* RISKLENS special card */
+.pc-risklens{background:var(--bg) !important;position:relative;}
+.pc-risklens::after{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(192,132,252,.05),transparent 40%);opacity:0;transition:opacity .3s;pointer-events:none;}
+.pc-risklens:hover::after{opacity:1;}
+.rl-accent-bar{height:3px;background:linear-gradient(90deg,#c084fc,#42d9f5,#b5f542);animation:gradshift 4s linear infinite;background-size:200% 100%;}
+@keyframes gradshift{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.rl-metric-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.rl-pill{font-size:9px;padding:3px 9px;border:1px solid;letter-spacing:.06em;border-radius:0;}
+.rl-pill-s{border-color:rgba(181,245,66,.4);color:var(--green);background:rgba(181,245,66,.05);}
+.rl-pill-b{border-color:rgba(66,217,245,.4);color:var(--blue);background:rgba(66,217,245,.05);}
+.rl-pill-r{border-color:rgba(245,95,95,.35);color:var(--red);background:rgba(245,95,95,.05);}
+.rl-pill-p{border-color:rgba(192,132,252,.4);color:var(--purple);background:rgba(192,132,252,.05);}
+.rl-modules{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:4px;}
+.rl-mod{background:var(--bg3);padding:12px 14px;}
+.rl-mod-n{font-size:9px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3px;}
+.rl-mod-title{font-size:11px;color:var(--text);font-weight:500;}
+.rl-mod-desc{font-size:10px;color:var(--muted);line-height:1.4;margin-top:2px;}
+
+/* NAME WOW — shimmer + split */
+.hname{font-family:var(--sans);font-size:clamp(48px,8.5vw,118px);font-weight:800;line-height:.86;letter-spacing:-3.5px;opacity:0;animation:up .65s .22s forwards;}
+.hname-line1{display:block;position:relative;}
+.hname-line2{display:block;color:var(--muted);font-weight:400;position:relative;}
+.hname-line1::after{content:'Manit';position:absolute;left:0;top:0;background:linear-gradient(90deg,transparent 0%,rgba(181,245,66,.18) 50%,transparent 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 100%;animation:shimmer 3.5s ease-in-out infinite 1.5s;}
+@keyframes shimmer{0%,100%{background-position:-200% 0}50%{background-position:200% 0}}
+.search-wrap{display:flex;align-items:center;gap:0;border:1px solid var(--border-b);background:var(--bg2);max-width:320px;margin-bottom:52px;}
+.search-icon{padding:0 12px;color:var(--muted);font-size:14px;flex-shrink:0;}
+.search-inp{background:none;border:none;color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 0;width:100%;outline:none;letter-spacing:.04em;}
+.search-inp::placeholder{color:var(--muted);}
+.pc.hidden{display:none;}
 
 /* PROJECTS */
 .pgrid{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);}
@@ -245,10 +271,7 @@ footer b{color:var(--accent);font-weight:400;}
   <div class="hero-spotlight" id="spotlight"></div>
   <div class="particles" id="particles"></div>
   <div class="eyebrow">IB Diploma · Grade 11 · India</div>
-  <h1 class="hname">
-    <span class="hname-first" id="tw-target"></span><span class="tw-cursor" id="tw-cursor"></span>
-    <span class="hname-second" id="tw-second" style="opacity:0"></span>
-  </h1>
+  <h1 class="hname"><span class="hname-line1">Manit</span><span class="hname-line2">Bhasin</span></h1>
   <p class="hdesc">Building quantitative finance models and AI tools for equity research. Interested in how financial theory holds up against real data.</p>
   <div class="hchips">
     <span class="chip">Financial Modelling</span>
@@ -259,9 +282,8 @@ footer b{color:var(--accent);font-weight:400;}
     <span class="chip">DCF Valuation</span>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n" data-target="4">0</div><div class="hstat-l">projects live</div></div>
+    <div class="hstat"><div class="hstat-n" data-target="5">0</div><div class="hstat-l">projects live</div></div>
     <div class="hstat"><div class="hstat-n" data-target="3">0</div><div class="hstat-l">certifications</div></div>
-    <div class="hstat"><div class="hstat-n" data-target="2">0</div><div class="hstat-l">Coursera courses</div></div>
   </div>
   <div class="hscroll">scroll ↓</div>
 </section>
@@ -269,6 +291,10 @@ footer b{color:var(--accent);font-weight:400;}
 <!-- PROJECTS -->
 <section id="projects">
   <div class="sh r"><span class="sn">01</span><h2 class="st">Projects</h2><div class="sr"></div></div>
+  <div class="search-wrap r">
+    <span class="search-icon">⌕</span>
+    <input class="search-inp" id="proj-search" placeholder="Search projects..." oninput="searchProjects(this.value)">
+  </div>
   <div class="pgrid">
 
     <!-- PROJECT 1: REGIME ENGINE -->
@@ -331,11 +357,84 @@ footer b{color:var(--accent);font-weight:400;}
       </div>
     </div>
 
-    <!-- PROJECT 2: DCF -->
+    <!-- PROJECT 2: RISKLENS -->
+    <div class="pc pc-risklens r" style="--ca:#c084fc">
+      <div class="rl-accent-bar"></div>
+      <div class="pc-top">
+        <div class="pc-tag" style="background:linear-gradient(90deg,rgba(192,132,252,.12),rgba(66,217,245,.06));padding:6px 10px;border:1px solid rgba(192,132,252,.2);display:inline-block;margin-bottom:14px;">⬡ Quantitative Finance · Risk Management · Investment Risk Management</div>
+        <div class="pc-idx" style="color:#c084fc">002</div>
+        <h3 class="pc-title" style="background:linear-gradient(135deg,#c084fc 0%,#42d9f5 55%,#b5f542 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">RiskLens — Portfolio Risk Engine</h3>
+        <p class="pc-desc">A full institutional-grade portfolio risk suite. Input any stocks and weights — get 8 risk metrics, 10,000 Monte Carlo simulations, a probability fan chart, correlation heatmap, and efficient frontier. Every metric explained in plain English.</p>
+        <div class="rl-modules">
+          <div class="rl-mod"><div class="rl-mod-n" style="color:var(--green)">Module 01</div><div class="rl-mod-title">Risk Analyser</div><div class="rl-mod-desc">Sharpe · Treynor · Alpha · VaR · CVaR · Beta · Max Drawdown</div></div>
+          <div class="rl-mod"><div class="rl-mod-n" style="color:var(--blue)">Module 02</div><div class="rl-mod-title">Monte Carlo</div><div class="rl-mod-desc">10,000 simulated futures · percentile fan chart · distribution</div></div>
+          <div class="rl-mod"><div class="rl-mod-n" style="color:var(--purple)">Module 03</div><div class="rl-mod-title">Risk Dashboard</div><div class="rl-mod-desc">Correlation heatmap · Efficient frontier · Portfolio positioning</div></div>
+        </div>
+        <div class="rl-metric-pills">
+          <span class="rl-pill rl-pill-s">Sharpe Ratio</span>
+          <span class="rl-pill rl-pill-s">Treynor Ratio</span>
+          <span class="rl-pill rl-pill-p">Alpha</span>
+          <span class="rl-pill rl-pill-r">VaR 95%</span>
+          <span class="rl-pill rl-pill-r">CVaR 95%</span>
+          <span class="rl-pill rl-pill-b">Beta</span>
+          <span class="rl-pill rl-pill-r">Max Drawdown</span>
+          <span class="rl-pill rl-pill-b">Monte Carlo</span>
+          <span class="rl-pill rl-pill-p">Efficient Frontier</span>
+        </div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:#c084fc" href="https://manitbhasin6-commits.github.io/Risklens" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:#c084fc" href="https://github.com/manitbhasin6-commits/risklens" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:#c084fc;color:#c084fc">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:#c084fc"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:#c084fc">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#c084fc">Plain English — what this actually does</div>
+            <div class="exp-txt">
+              <p>Most people think about investing as just "will this go up?" RiskLens asks the harder questions: <strong>how much could I lose, how likely is that, and is the return worth the risk?</strong> These are the exact questions risk managers at banks and hedge funds answer every day.</p>
+              <p>You input a portfolio of stocks with their weights, expected returns, and volatility. RiskLens runs three analyses to give you a complete picture of the risk.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#c084fc">The 8 metrics</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:var(--green)">Sharpe Ratio</span><span class="mdef">(Return − Rf) / Volatility. How much return per unit of total risk? Above 1.0 is good.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--green)">Treynor Ratio</span><span class="mdef">(Return − Rf) / Beta. Uses market risk only. Better for comparing diversified portfolios.</span></div>
+              <div class="mrow"><span class="msym" style="color:#c084fc">Alpha</span><span class="mdef">Return above what CAPM predicts. Positive = outperforming the market on a risk-adjusted basis.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--red)">VaR (95%)</span><span class="mdef">On your worst 5% of days, you'll lose at least this much. The threshold, not the average.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--red)">CVaR (95%)</span><span class="mdef">Average loss beyond VaR. More accurate. Used by banks for regulatory capital requirements.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--blue)">Beta</span><span class="mdef">Market sensitivity. Beta 1.2 = portfolio moves 1.2× the market in both directions.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--red)">Max Drawdown</span><span class="mdef">Worst peak-to-trough loss. The number investors lose sleep over.</span></div>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--blue)">Monte Carlo</div>
+            <div class="exp-txt"><p>Runs your portfolio through thousands of randomly generated futures. You get a <strong>distribution of possible outcomes</strong> — from worst case to best. Wide fan chart = high uncertainty.</p></div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#c084fc">Efficient Frontier</div>
+            <div class="exp-txt"><p>The optimal portfolio curve. Your portfolio is plotted as a dot. On the curve = well-built. Below it = you can get more return for the same risk by rebalancing.</p></div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:#c084fc">How to use it</div>
+            <div class="steps">
+              <div class="step"><span class="step-n" style="color:#c084fc">01</span><span class="step-txt"><strong>Add stocks</strong> — ticker, weight (%), expected return, volatility, beta. Weights must sum to 100%.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--green)">02</span><span class="step-txt"><strong>Risk Analyser</strong> — hover any card for plain-English explanation. Green = healthy, red = high risk.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--blue)">03</span><span class="step-txt"><strong>Monte Carlo</strong> — set simulations, horizon, capital. Click Run to generate 10,000 scenarios.</span></div>
+              <div class="step"><span class="step-n" style="color:#c084fc">04</span><span class="step-txt"><strong>Dashboard</strong> — check heatmap (want low correlation) and efficient frontier positioning.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3: DCF -->
     <div class="pc r" style="--ca:var(--amber)">
       <div class="pc-top">
         <div class="pc-tag">Investment Banking · Financial Modelling</div>
-        <div class="pc-idx">002</div>
+        <div class="pc-idx">003</div>
         <h3 class="pc-title">DCF Valuation Model</h3>
         <p class="pc-desc">A complete, interactive discounted cash flow model — full income statement, cash flow statement, balance sheet, WACC build-up, and enterprise value bridge. Every assumption is live-editable. Includes sensitivity tables for WACC vs terminal growth rate and WACC vs revenue growth.</p>
         <div class="tags"><span class="tag">DCF</span><span class="tag">WACC</span><span class="tag">Financial Modelling</span><span class="tag">Chart.js</span><span class="tag">Vanilla JS</span><span class="tag">IB/PE</span></div>
@@ -379,11 +478,11 @@ footer b{color:var(--accent);font-weight:400;}
       </div>
     </div>
 
-    <!-- PROJECT 3: TRADE SIM -->
+    <!-- PROJECT 4: TRADE SIM -->
     <div class="pc r" style="--ca:#c084fc">
       <div class="pc-top">
         <div class="pc-tag">Web App · School · Trading</div>
-        <div class="pc-idx">003</div>
+        <div class="pc-idx">004</div>
         <h3 class="pc-title">FHS Trading Simulator</h3>
         <p class="pc-desc">A live trading competition platform built for and used at Fountainhead School. Students compete in real-time simulated markets — buying and selling positions, tracking P&L, and competing on a live leaderboard. Built and deployed independently.</p>
         <div class="tags"><span class="tag">Web App</span><span class="tag">Firebase</span><span class="tag">Real-time</span><span class="tag">Trading Simulation</span><span class="tag">Leaderboard</span></div>
@@ -394,11 +493,11 @@ footer b{color:var(--accent);font-weight:400;}
       </div>
     </div>
 
-    <!-- PROJECT 4: STOCK RESEARCH KIT -->
+    <!-- PROJECT 5: STOCK RESEARCH KIT -->
     <div class="pc r" style="--ca:var(--blue)">
       <div class="pc-top">
         <div class="pc-tag">AI Tools · Equity Research · Framework</div>
-        <div class="pc-idx">004</div>
+        <div class="pc-idx">005</div>
         <h3 class="pc-title">Stock Research Kit</h3>
         <p class="pc-desc">A structured 5-step equity research framework that turns Claude into a permanent, hallucination-free stock analyst. Enter a ticker and get every prompt auto-generated — grounded in Peter Lynch and Charlie Munger. Every claim traced to an exact quote from your uploaded filings.</p>
         <div class="tags"><span class="tag">Claude API</span><span class="tag">Prompt Engineering</span><span class="tag">Equity Research</span><span class="tag">Lynch · Munger</span><span class="tag">HTML</span></div>
@@ -430,10 +529,9 @@ footer b{color:var(--accent);font-weight:400;}
       </div>
     </div>
 
+
   </div>
 </section>
-
-<!-- CERTIFICATIONS -->
 <section id="certs">
   <div class="sh r"><span class="sn">02</span><h2 class="st">Certifications</h2><div class="sr"></div></div>
   <div class="certs-grid r">
@@ -567,28 +665,6 @@ if(hero){
   });
 }
 
-// Typewriter on name
-const twTarget=document.getElementById('tw-target');
-const twSecond=document.getElementById('tw-second');
-const twCursor=document.getElementById('tw-cursor');
-function typeWriter(){
-  const first='Manit'; const second='Bhasin';
-  let i=0;
-  const typeFirst=()=>{
-    if(i<=first.length){
-      if(twTarget) twTarget.textContent=first.slice(0,i);
-      i++; setTimeout(typeFirst,i===1?500:75);
-    } else {
-      setTimeout(()=>{
-        if(twSecond){twSecond.style.opacity='1';twSecond.style.transition='opacity .5s ease';twSecond.textContent=second;}
-        setTimeout(()=>{if(twCursor)twCursor.style.display='none';},900);
-      },250);
-    }
-  };
-  setTimeout(typeFirst,700);
-}
-typeWriter();
-
 // Animated counters
 document.querySelectorAll('.hstat-n[data-target]').forEach(el=>{
   new IntersectionObserver(([entry])=>{
@@ -599,6 +675,15 @@ document.querySelectorAll('.hstat-n[data-target]').forEach(el=>{
     }
   },{threshold:.5}).observe(el);
 });
+
+// Search projects
+function searchProjects(q){
+  const term=q.toLowerCase().trim();
+  document.querySelectorAll('.pc').forEach(card=>{
+    const text=card.textContent.toLowerCase();
+    card.classList.toggle('hidden',term!==''&&!text.includes(term));
+  });
+}
 
 // Scroll reveal
 const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target);}}),{threshold:.06});
