@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finance Museum — Manit Bhasin</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#080808;color:#eae8e2;font-family:'JetBrains Mono',monospace;overflow-x:hidden;min-height:100vh;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.015) 2px,rgba(0,0,0,.015) 4px);pointer-events:none;z-index:9000;}
+
+/* PAGE */
+.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px 60px;position:relative;overflow:hidden;}
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.028) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.028) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 90% 90% at 50% 50%,black 0%,transparent 100%);}
+.bg-orb-g{position:absolute;top:40%;left:40%;transform:translate(-50%,-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(181,245,66,.042) 0%,transparent 65%);animation:op 8s ease-in-out infinite;pointer-events:none;}
+.bg-orb-b{position:absolute;top:55%;left:60%;transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(66,217,245,.03) 0%,transparent 65%);animation:op 10s ease-in-out infinite reverse;pointer-events:none;}
+@keyframes op{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-50%) scale(1.1)}}
+
+.back-link{position:fixed;top:20px;left:24px;font-size:10px;color:rgba(255,255,255,.22);text-decoration:none;letter-spacing:.08em;z-index:500;transition:color .2s;display:flex;align-items:center;gap:5px;}
+.back-link:hover{color:#b5f542;}
+.back-link::before{content:'← ';}
+
+/* HEADLINE */
+.headline{position:relative;z-index:2;text-align:center;margin-bottom:60px;pointer-events:none;}
+.hl-pre{font-size:10px;color:rgba(181,245,66,.55);letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;}
+.hl-pre::before{content:'> ';}
+.hl-h{font-family:'Syne',sans-serif;font-size:clamp(30px,4.5vw,52px);font-weight:800;letter-spacing:-1.8px;line-height:.92;margin-bottom:12px;}
+.hl-h em{font-style:normal;background:linear-gradient(135deg,#b5f542 0%,#42d9f5 50%,#c084fc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hl-sub{font-size:11px;color:rgba(255,255,255,.28);letter-spacing:.05em;}
+
+/* WALLET SCENE */
+.scene{position:relative;z-index:2;width:460px;height:340px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+
+/* WALLET */
+.wallet{
+  position:absolute;
+  bottom:30px;left:50%;
+  transform:translateX(-50%);
+  width:380px;height:220px;
+  border-radius:18px;
+  background:linear-gradient(150deg,#201a10 0%,#130f08 50%,#1c1710 100%);
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:
+    0 60px 120px rgba(0,0,0,.95),
+    0 20px 40px rgba(0,0,0,.7),
+    0 0 0 1px rgba(255,255,255,.04),
+    inset 0 1px 0 rgba(255,255,255,.08),
+    inset 0 -1px 0 rgba(0,0,0,.5);
+  transition:transform .4s cubic-bezier(.4,0,.2,1),box-shadow .4s;
+  z-index:1;
+}
+.scene:hover .wallet{transform:translateX(-50%) translateY(-5px);}
+.scene.open .wallet{transform:translateX(-50%) translateY(8px);}
+.wallet-stitching{position:absolute;inset:7px;border-radius:12px;border:1.5px dashed rgba(255,255,255,.045);}
+.wallet-crease{position:absolute;top:50%;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(255,255,255,.06) 20%,rgba(255,255,255,.06) 80%,transparent);transform:translateY(-50%);}
+.wallet-texture{position:absolute;inset:0;border-radius:18px;background:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(255,255,255,.006) 2px,rgba(255,255,255,.006) 3px);}
+.wallet-logo{position:absolute;top:18px;left:22px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:rgba(255,255,255,.12);letter-spacing:-.3px;}
+.wallet-label{position:absolute;bottom:16px;right:20px;font-size:8px;color:rgba(255,255,255,.08);letter-spacing:.2em;text-transform:uppercase;}
+.wallet-slots{position:absolute;top:50%;right:24px;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;}
+.wallet-slot{width:36px;height:24px;border-radius:4px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);}
+
+/* CARDS */
+.card{
+  position:absolute;
+  width:300px;height:188px;
+  border-radius:14px;
+  left:50%;top:0;
+  border:1px solid rgba(255,255,255,.13);
+  overflow:hidden;
+  cursor:pointer;
+  will-change:transform;
+  transition:
+    transform .55s cubic-bezier(.34,1.4,.64,1),
+    box-shadow .4s ease,
+    opacity .3s ease;
+}
+.card canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+.card-gloss{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,transparent 40%,rgba(0,0,0,.15) 100%);z-index:5;pointer-events:none;}
+.card-noise{position:absolute;inset:0;opacity:.04;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");z-index:4;}
+.card-bottom{position:absolute;bottom:0;left:0;right:0;height:70px;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 100%);z-index:6;}
+.card-chip{position:absolute;top:20px;left:20px;width:32px;height:24px;border-radius:5px;background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.07));border:1px solid rgba(255,255,255,.2);z-index:7;}
+.card-chip::after{content:'';position:absolute;left:10px;top:7px;width:12px;height:10px;border:1px solid rgba(255,255,255,.3);border-radius:2px;}
+.card-nfc{position:absolute;top:22px;right:58px;font-size:15px;color:rgba(255,255,255,.18);z-index:7;font-style:normal;}
+.card-circles{position:absolute;top:16px;right:16px;display:flex;z-index:7;}
+.card-circle{width:24px;height:24px;border-radius:50%;opacity:.7;}
+.card-num{position:absolute;bottom:42px;left:20px;font-size:11px;letter-spacing:.22em;color:rgba(255,255,255,.5);font-weight:500;z-index:7;}
+.card-name{position:absolute;bottom:16px;left:20px;font-family:'Syne',sans-serif;font-size:13px;font-weight:800;color:rgba(255,255,255,.88);letter-spacing:-.2px;z-index:7;}
+.card-type{position:absolute;bottom:14px;right:16px;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-align:right;line-height:1.5;z-index:7;}
+
+/* TUCKED state (closed wallet) */
+.card-1{transform:translate(-50%,160px) rotate(-5deg);box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:4;opacity:.9;}
+.card-2{transform:translate(-50%,155px) rotate(0deg);box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:3;opacity:.85;}
+.card-3{transform:translate(-50%,150px) rotate(5deg);box-shadow:0 10px 30px rgba(0,0,0,.6);z-index:2;opacity:.8;}
+
+/* FANNED state */
+.scene.open .card-1{
+  transform:translate(-50%,20px) translateX(-175px) rotate(-22deg);
+  box-shadow:0 40px 80px rgba(0,0,0,.85),0 0 50px rgba(181,245,66,.1);
+  z-index:4;opacity:1;
+}
+.scene.open .card-2{
+  transform:translate(-50%,0px) rotate(0deg);
+  box-shadow:0 50px 90px rgba(0,0,0,.9),0 0 50px rgba(192,132,252,.12);
+  z-index:5;opacity:1;
+}
+.scene.open .card-3{
+  transform:translate(-50%,20px) translateX(175px) rotate(22deg);
+  box-shadow:0 40px 80px rgba(0,0,0,.85),0 0 50px rgba(66,217,245,.1);
+  z-index:4;opacity:1;
+}
+.scene.open .card-1:hover{transform:translate(-50%,-10px) translateX(-175px) rotate(-22deg);box-shadow:0 55px 100px rgba(0,0,0,.9),0 0 60px rgba(181,245,66,.18);}
+.scene.open .card-2:hover{transform:translate(-50%,-20px) rotate(0deg);box-shadow:0 60px 110px rgba(0,0,0,.95),0 0 60px rgba(192,132,252,.2);}
+.scene.open .card-3:hover{transform:translate(-50%,-10px) translateX(175px) rotate(22deg);box-shadow:0 55px 100px rgba(0,0,0,.9),0 0 60px rgba(66,217,245,.18);}
+
+.hint{position:relative;z-index:2;margin-top:28px;font-size:10px;color:rgba(255,255,255,.18);letter-spacing:.1em;text-align:center;transition:opacity .3s;pointer-events:none;}
+.bounce{display:inline-block;animation:bounce 2.2s ease-in-out infinite;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* EXHIBIT FULLSCREEN */
+.exhibit{position:fixed;inset:0;z-index:1000;background:#060606;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .38s cubic-bezier(.4,0,.2,1);}
+.exhibit.open{opacity:1;pointer-events:all;}
+
+.ex-nav{padding:14px 30px;border-bottom:1px solid rgba(255,255,255,.07);background:#0a0a0a;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:16px;}
+.ex-back{background:none;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.38);font-family:'JetBrains Mono',monospace;font-size:10px;padding:6px 14px;cursor:pointer;letter-spacing:.07em;transition:all .2s;flex-shrink:0;}
+.ex-back:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.75);}
+.ex-titles{flex:1;}
+.ex-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:-.3px;}
+.ex-sub{font-size:10px;color:rgba(255,255,255,.28);letter-spacing:.06em;margin-top:1px;}
+.ex-launch{font-size:10px;text-decoration:none;border:1px solid;padding:6px 14px;letter-spacing:.07em;transition:opacity .2s;flex-shrink:0;font-weight:700;}
+.ex-launch:hover{opacity:.75;}
+
+.ex-main{flex:1;display:grid;grid-template-columns:1fr 360px;overflow:hidden;min-height:0;}
+.ex-canvas{position:relative;overflow:hidden;background:#040404;}
+.ex-canvas canvas{position:absolute;inset:0;width:100%;height:100%;display:block;}
+.ex-panel{border-left:1px solid rgba(255,255,255,.07);overflow-y:auto;background:#0a0a0a;display:flex;flex-direction:column;}
+.panel-block{padding:22px 22px 0;}
+.panel-block:last-child{padding-bottom:22px;}
+.panel-block+.panel-block{border-top:1px solid rgba(255,255,255,.06);margin-top:16px;padding-top:20px;}
+.p-label{font-size:9px;letter-spacing:.13em;text-transform:uppercase;opacity:.35;margin-bottom:9px;}
+.p-text{font-size:11.5px;color:rgba(255,255,255,.42);line-height:1.92;}
+.p-text strong{color:rgba(255,255,255,.82);}
+.p-text em{font-style:normal;color:rgba(255,255,255,.55);}
+.slider-row{display:flex;align-items:center;gap:10px;margin-bottom:11px;}
+.sl-name{font-size:10px;color:rgba(255,255,255,.28);width:112px;flex-shrink:0;line-height:1.4;}
+input[type=range]{-webkit-appearance:none;flex:1;height:2px;background:rgba(255,255,255,.1);outline:none;cursor:pointer;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;cursor:pointer;transition:transform .15s;}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);}
+.sl-val{font-size:11px;font-weight:700;width:38px;text-align:right;flex-shrink:0;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:2px;}
+.stat{background:#141414;border:1px solid rgba(255,255,255,.06);padding:10px 12px;}
+.stat-l{font-size:9px;color:rgba(255,255,255,.25);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;}
+.stat-v{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;line-height:1;}
+
+@media(max-width:680px){
+  .scene{width:340px;height:280px;}
+  .wallet{width:300px;height:185px;}
+  .card{width:240px;height:150px;}
+  .scene.open .card-1{transform:translate(-50%,20px) translateX(-130px) rotate(-20deg);}
+  .scene.open .card-3{transform:translate(-50%,20px) translateX(130px) rotate(20deg);}
+  .ex-main{grid-template-columns:1fr;}
+  .ex-panel{display:none;}
+}
+</style>
+</head>
+<body>
+
+<a class="back-link" href="index.html">Back to portfolio</a>
+
+<div class="page">
+  <div class="bg-grid"></div>
+  <div class="bg-orb-g"></div>
+  <div class="bg-orb-b"></div>
+
+  <div class="headline">
+    <div class="hl-pre">Interactive Finance Museum</div>
+    <h1 class="hl-h">Three tools.<br><em>One wallet.</em></h1>
+    <div class="hl-sub">Click the wallet · fan out the cards · pick one to explore</div>
+  </div>
+
+  <div class="scene" id="scene" onclick="toggleWallet(event)">
+
+    <!-- Card 1: Monte Carlo (green) -->
+    <div class="card card-1" id="c1" onclick="openEx(0,event)" style="background:linear-gradient(140deg,#081502 0%,#112508 50%,#060e02 100%);">
+      <canvas id="card-mc"></canvas>
+      <div class="card-noise"></div>
+      <div class="card-gloss"></div>
+      <div class="card-bottom"></div>
+      <div class="card-chip"></div>
+      <em class="card-nfc">))</em>
+      <div class="card-circles">
+        <div class="card-circle" style="background:#b5f542;margin-right:-7px"></div>
+        <div class="card-circle" style="background:#42d9f5"></div>
+      </div>
+      <div class="card-num">•••• •••• •••• 2024</div>
+      <div class="card-name">Monte Carlo</div>
+      <div class="card-type">PORTFOLIO<br>FUTURES</div>
+    </div>
+
+    <!-- Card 2: Market Regime (purple) -->
+    <div class="card card-2" id="c2" onclick="openEx(1,event)" style="background:linear-gradient(140deg,#0b0618 0%,#180c2e 50%,#070411 100%);">
+      <canvas id="card-rg"></canvas>
+      <div class="card-noise"></div>
+      <div class="card-gloss"></div>
+      <div class="card-bottom"></div>
+      <div class="card-chip"></div>
+      <em class="card-nfc">))</em>
+      <div class="card-circles">
+        <div class="card-circle" style="background:#c084fc;margin-right:-7px"></div>
+        <div class="card-circle" style="background:#f55f5f"></div>
+      </div>
+      <div class="card-num">•••• •••• •••• 2025</div>
+      <div class="card-name">Market Regime</div>
+      <div class="card-type">REGIME<br>DETECTION</div>
+    </div>
+
+    <!-- Card 3: Efficient Frontier (cyan) -->
+    <div class="card card-3" id="c3" onclick="openEx(2,event)" style="background:linear-gradient(140deg,#021318 0%,#051e26 50%,#020c10 100%);">
+      <canvas id="card-ef"></canvas>
+      <div class="card-noise"></div>
+      <div class="card-gloss"></div>
+      <div class="card-bottom"></div>
+      <div class="card-chip"></div>
+      <em class="card-nfc">))</em>
+      <div class="card-circles">
+        <div class="card-circle" style="background:#42d9f5;margin-right:-7px"></div>
+        <div class="card-circle" style="background:#c084fc"></div>
+      </div>
+      <div class="card-num">•••• •••• •••• 2026</div>
+      <div class="card-name">Efficient Frontier</div>
+      <div class="card-type">SHARPE<br>OPTIMIZER</div>
+    </div>
+
+    <!-- Wallet on top -->
+    <div class="wallet" id="wallet">
+      <div class="wallet-texture"></div>
+      <div class="wallet-stitching"></div>
+      <div class="wallet-crease"></div>
+      <div class="wallet-logo">MB.</div>
+      <div class="wallet-label">Finance Museum</div>
+      <div class="wallet-slots">
+        <div class="wallet-slot"></div>
+        <div class="wallet-slot"></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="hint" id="hint">click to open wallet <span class="bounce">↓</span></div>
+</div>
+
+<!-- ── EXHIBIT 0: MONTE CARLO ── -->
+<div class="exhibit" id="ex-0">
+  <div class="ex-nav">
+    <button class="ex-back" onclick="closeEx()">← Back</button>
+    <div class="ex-titles">
+      <div class="ex-name" style="color:#b5f542">Monte Carlo Simulator</div>
+      <div class="ex-sub">200 possible futures for your portfolio, running simultaneously</div>
+    </div>
+    <button class="ex-back" id="mc-pause-btn" onclick="togglePause('mc')" style="border-color:rgba(181,245,66,.3);color:#b5f542">⏸ Pause</button><a class="ex-launch" href="https://manitbhasin6-commits.github.io/Monte-Carlo/" target="_blank" style="color:#b5f542;border-color:rgba(181,245,66,.4);">Open full tool ↗</a>
+  </div>
+  <div class="ex-main">
+    <div class="ex-canvas"><canvas id="ex-mc"></canvas></div>
+    <div class="ex-panel">
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#b5f542">What you're looking at</div>
+        <div class="p-text">
+          Each coloured line is one possible future for your portfolio. Some go up a lot. Some crash. Most land somewhere in between. <strong>The bright cyan line down the middle is the median</strong> — exactly half of all simulated futures end above it, half below.<br><br>
+          The dashed white line is your starting value. Any path above it means you made money. Any path below means you lost money. Notice how the paths <strong>spread out over time</strong> — the further into the future, the wider the range of outcomes. That's uncertainty compounding.
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#b5f542">Try changing these</div>
+        <div class="slider-row">
+          <div class="sl-name">Annual Return</div>
+          <input type="range" id="mc-ret" min="-15" max="45" step="1" value="12" oninput="mcUpd()" style="accent-color:#b5f542">
+          <div class="sl-val" id="mc-ret-v" style="color:#b5f542">12%</div>
+        </div>
+        <div class="slider-row">
+          <div class="sl-name">Volatility (σ)<br><em style="font-size:9px;color:rgba(255,255,255,.25)">how wildly it swings</em></div>
+          <input type="range" id="mc-vol" min="5" max="65" step="1" value="18" oninput="mcUpd()" style="accent-color:#b5f542">
+          <div class="sl-val" id="mc-vol-v" style="color:#b5f542">18%</div>
+        </div>
+        <div class="slider-row">
+          <div class="sl-name">Time Horizon</div>
+          <input type="range" id="mc-yr" min="1" max="5" step="1" value="1" oninput="mcUpd()" style="accent-color:#b5f542">
+          <div class="sl-val" id="mc-yr-v" style="color:#b5f542">1yr</div>
+        </div>
+        <div class="slider-row">
+          <div class="sl-name">Draw Speed<br><em style="font-size:9px;color:rgba(255,255,255,.25)">slow = easier to follow</em></div>
+          <input type="range" id="mc-speed" min="1" max="8" step="1" value="2" oninput="document.getElementById('mc-speed-v').textContent=['','Slow','','Medium','','','','','Fast'][+this.value]||this.value" style="accent-color:#b5f542">
+          <div class="sl-val" id="mc-speed-v" style="color:rgba(255,255,255,.4);font-size:9px;width:52px">Medium</div>
+        </div>
+        <div class="p-text" style="font-size:10.5px;margin-top:4px;">Try cranking up <strong>volatility</strong> and watch the paths explode in every direction. Set speed to <strong>Slow</strong> to follow a single path as it unfolds.</div>
+      </div>
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#b5f542">Outcomes at end of horizon — starting from $10,000</div>
+        <div class="stat-grid">
+          <div class="stat"><div class="stat-l">Worst 5%</div><div class="stat-v" id="mc-p5" style="color:#f55f5f">—</div></div>
+          <div class="stat"><div class="stat-l">Median</div><div class="stat-v" id="mc-med">—</div></div>
+          <div class="stat"><div class="stat-l">Best 5%</div><div class="stat-v" id="mc-p95" style="color:#b5f542">—</div></div>
+          <div class="stat"><div class="stat-l">Prob. of profit</div><div class="stat-v" id="mc-pp" style="color:#b5f542">—</div></div>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <div class="p-label">The maths (if you're curious)</div>
+        <div class="p-text" style="font-size:10.5px;opacity:.65;">
+          Each day, the portfolio moves by a random amount drawn from a normal distribution. The formula is:<br><br>
+          <em>S(t+1) = S(t) × exp((μ − ½σ²) + σ·Z)</em><br><br>
+          Where μ is the daily return, σ is daily volatility, and Z is random. The − ½σ² term is a mathematical correction (Itô's lemma) that keeps the expected value correct. Run this 252 times for a year, 120 times for 120 different futures, and you get what you see on the left.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── EXHIBIT 1: MARKET REGIME ── -->
+<div class="exhibit" id="ex-1">
+  <div class="ex-nav">
+    <button class="ex-back" onclick="closeEx()">← Back</button>
+    <div class="ex-titles">
+      <div class="ex-name" style="color:#c084fc">Market Regime Detection</div>
+      <div class="ex-sub">The market moves through three distinct moods — this model reads them</div>
+    </div>
+    <button class="ex-back" id="rg-pause-btn" onclick="togglePause('rg')" style="border-color:rgba(192,132,252,.3);color:#c084fc">⏸ Pause</button><a class="ex-launch" href="https://manitbhasin6-commits.github.io/market-regime-detection" target="_blank" style="color:#c084fc;border-color:rgba(192,132,252,.4);">Open full tool ↗</a>
+  </div>
+  <div class="ex-main">
+    <div class="ex-canvas"><canvas id="ex-rg"></canvas></div>
+    <div class="ex-panel">
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#c084fc">What you're looking at</div>
+        <div class="p-text">
+          The price line changes colour depending on which regime the model thinks the market is in. <strong style="color:#b5f542">Green = bull market</strong> (prices trending upward, calm). <strong style="color:#f55f5f">Red = bear market</strong> (prices trending downward). <strong style="color:#c084fc">Purple = high volatility</strong> (prices jumping around without a clear direction).<br><br>
+          The coloured bands behind the price line make it even clearer — each band covers a period when the market was in that state. Notice how regimes last for weeks or months at a time, and then shift abruptly. Real markets behave exactly like this.
+        </div>
+      </div>
+
+
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#c084fc">This simulation's breakdown</div>
+        <div class="stat-grid">
+          <div class="stat"><div class="stat-l">Bull days</div><div class="stat-v" id="rg-b" style="color:#b5f542">—</div></div>
+          <div class="stat"><div class="stat-l">Bear days</div><div class="stat-v" id="rg-br" style="color:#f55f5f">—</div></div>
+          <div class="stat"><div class="stat-l">Volatile days</div><div class="stat-v" id="rg-v" style="color:#c084fc">—</div></div>
+          <div class="stat"><div class="stat-l">Regime shifts</div><div class="stat-v" id="rg-sh">—</div></div>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <div class="p-label">Why this matters</div>
+        <div class="p-text" style="font-size:10.5px;opacity:.65;">
+          Most investment strategies assume markets behave the same way all the time. They don't. A strategy that works in a bull market can destroy you in a volatile one. <strong>Regime detection</strong> is how professional quant funds decide when to be aggressive and when to step back. The technique used here — a Hidden Markov Model — is the same type of algorithm used in speech recognition to detect which word is being spoken.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── EXHIBIT 2: EFFICIENT FRONTIER ── -->
+<div class="exhibit" id="ex-2">
+  <div class="ex-nav">
+    <button class="ex-back" onclick="closeEx()">← Back</button>
+    <div class="ex-titles">
+      <div class="ex-name" style="color:#42d9f5">Efficient Frontier</div>
+      <div class="ex-sub">Every dot is a different portfolio — one of them is optimal</div>
+    </div>
+    <button class="ex-back" id="ef-pause-btn" onclick="togglePause('ef')" style="border-color:rgba(66,217,245,.3);color:#42d9f5">⏸ Pause</button><a class="ex-launch" href="https://manitbhasin6-commits.github.io/Sharpe-Optimizer/" target="_blank" style="color:#42d9f5;border-color:rgba(66,217,245,.4);">Open full tool ↗</a>
+  </div>
+  <div class="ex-main">
+    <div class="ex-canvas"><canvas id="ex-ef"></canvas></div>
+    <div class="ex-panel">
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#42d9f5">What you're looking at</div>
+        <div class="p-text">
+          Each dot is a different way to split $10,000 between five assets — stocks, bonds, gold. The position of the dot tells you two things: how far right it is = how risky that portfolio is. How high it is = how much return it's expected to earn.<br><br>
+          <strong>Brighter purple dots have a higher Sharpe Ratio</strong> — they're earning more return per unit of risk they're taking on. Dimmer dots are worse deals. The <strong style="color:#c084fc">glowing purple dot</strong> is the single best portfolio found — the Maximum Sharpe Portfolio. The curved edge they all cluster against is the Efficient Frontier.
+        </div>
+      </div>
+
+
+
+      <div class="panel-block">
+        <div class="p-label" style="color:#42d9f5">Optimal portfolio found</div>
+        <div class="stat-grid">
+          <div class="stat"><div class="stat-l">Max Sharpe</div><div class="stat-v" id="ef-sharpe" style="color:#c084fc">—</div></div>
+          <div class="stat"><div class="stat-l">Return</div><div class="stat-v" id="ef-ret" style="color:#b5f542">—</div></div>
+          <div class="stat"><div class="stat-l">Risk (vol)</div><div class="stat-v" id="ef-vol" style="color:#42d9f5">—</div></div>
+          <div class="stat"><div class="stat-l">Tested</div><div class="stat-v" id="ef-ct">—</div></div>
+        </div>
+      </div>
+
+      <div class="panel-block">
+        <div class="p-label">Why this matters</div>
+        <div class="p-text" style="font-size:10.5px;opacity:.65;">
+          There are infinite ways to split your money between assets. Most of them are suboptimal — you're either taking more risk than you need to for the return you're getting, or leaving return on the table. The Efficient Frontier shows you the boundary of what's actually achievable. Any portfolio sitting below this curve is a wasted opportunity. This is the foundation of modern portfolio theory, developed by Harry Markowitz in 1952. He won the Nobel Prize for it.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function randn(){let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+const COLORS=['#b5f542','#42d9f5','#f5a742','#f55f5f','#c084fc','#34d399','#f472b6','#60a5fa','#fbbf24','#a78bfa','#6ee7b7','#93c5fd'];
+const fmt=v=>v>=1000?'$'+(v/1000).toFixed(1)+'K':'$'+Math.round(v);
+function resizeCv(cv){cv.width=cv.offsetWidth;cv.height=cv.offsetHeight;}
+
+// ── WALLET ─────────────────────────────────────────────────────────────────
+let walletOpen=false;
+function toggleWallet(e){
+  if(e.target.closest('.card')) return;
+  walletOpen=!walletOpen;
+  document.getElementById('scene').classList.toggle('open',walletOpen);
+  document.getElementById('hint').innerHTML=walletOpen?'pick a card to explore':'click to open wallet <span class="bounce">↓</span>';
+}
+
+// ── PAUSE ──────────────────────────────────────────────────────────────────
+const paused={mc:false,rg:false,ef:false};
+function togglePause(key){
+  paused[key]=!paused[key];
+  const btn=document.getElementById(key+'-pause-btn');
+  if(btn) btn.textContent=paused[key]?'▶ Resume':'⏸ Pause';
+}
+
+// ── EXHIBIT OPEN/CLOSE ─────────────────────────────────────────────────────
+const rafs={mc:null,rg:null,ef:null};
+function stopAll(){
+  Object.keys(rafs).forEach(k=>{
+    if(rafs[k]){cancelAnimationFrame(rafs[k]);rafs[k]=null;}
+  });
+}
+function openEx(idx,e){
+  e&&e.stopPropagation();
+  stopAll();
+  document.querySelectorAll('.exhibit').forEach((el,i)=>el.classList.toggle('open',i===idx));
+  document.body.style.overflow='hidden';
+  // reset pause state
+  ['mc','rg','ef'].forEach(k=>{paused[k]=false;const b=document.getElementById(k+'-pause-btn');if(b)b.textContent='⏸ Pause';});
+  setTimeout(()=>{
+    if(idx===0) startMc();
+    if(idx===1) startRg();
+    if(idx===2) startEf();
+  },80);
+}
+function closeEx(){
+  document.querySelectorAll('.exhibit').forEach(el=>el.classList.remove('open'));
+  document.body.style.overflow='';
+  stopAll();
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape') closeEx();});
+
+// ── CARD MINI SIMS (always running, no controls needed) ───────────────────
+(function cardMc(){
+  const cv=document.getElementById('card-mc');if(!cv)return;
+  resizeCv(cv);
+  let paths=[],t=0;
+  function gen(){
+    paths=[];const H=cv.height;
+    for(let i=0;i<36;i++){const p=[H*.5];for(let s=1;s<100;s++){const dy=-(0.0005+0.016*randn())*H*3;p.push(Math.max(H*.04,Math.min(H*.96,p[p.length-1]+dy)));}paths.push(p);}
+    t=1;
+  }
+  gen();
+  (function draw(){
+    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,T=Math.min(t,99),sw=W/100;
+    ctx.fillStyle='rgba(4,4,4,.22)';ctx.fillRect(0,0,W,H);
+    paths.forEach((p,i)=>{ctx.beginPath();ctx.moveTo(0,p[0]);for(let s=1;s<=T;s++) ctx.lineTo(s*sw,p[s]);ctx.strokeStyle=COLORS[i%COLORS.length]+'50';ctx.lineWidth=1;ctx.stroke();});
+    if(T>2){ctx.beginPath();ctx.moveTo(0,paths[0][0]);for(let s=1;s<=T;s++){const v=paths.map(p=>p[s]).sort((a,b)=>a-b);ctx.lineTo(s*sw,v[Math.floor(v.length/2)]);}ctx.strokeStyle='rgba(66,217,245,.9)';ctx.lineWidth=2;ctx.stroke();}
+    if(t<100) t+=2; else gen();
+    requestAnimationFrame(draw);
+  })();
+})();
+
+(function cardRg(){
+  const cv=document.getElementById('card-rg');if(!cv)return;
+  resizeCv(cv);
+  let pr=[],rg=[],t=0;
+  const RC=['rgba(181,245,66,','rgba(245,95,95,','rgba(192,132,252,'];
+  function gen(){
+    pr=[50];rg=[];let r=0,rt=0,rd=18+Math.floor(Math.random()*22);
+    for(let s=1;s<110;s++){rt++;if(rt>rd){r=Math.floor(Math.random()*3);rt=0;rd=12+Math.floor(Math.random()*28);}const mu=[.0007,-.0005,0][r],sig=[.012,.016,.026][r];pr.push(Math.max(5,pr[pr.length-1]*Math.exp((mu-.5*sig*sig)+sig*randn())));rg.push(r);}
+    t=1;
+  }
+  gen();
+  (function draw(){
+    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,T=Math.min(t,109),sw=W/110;
+    const mn=Math.min(...pr.slice(0,T+1)),mx=Math.max(...pr.slice(0,T+1));
+    const toY=v=>H*.08+(H*.84)*(mx-v)/(mx-mn||1);
+    ctx.clearRect(0,0,W,H);
+    let s0=0,cur=rg[0];
+    for(let s=1;s<=T;s++){if(rg[s]!==cur||s===T){ctx.fillStyle=RC[cur]+'0.1)';ctx.fillRect(s0*sw,0,(s-s0)*sw,H);s0=s;cur=rg[s];}}
+    for(let s=1;s<=T;s++){ctx.beginPath();ctx.moveTo((s-1)*sw,toY(pr[s-1]));ctx.lineTo(s*sw,toY(pr[s]));ctx.strokeStyle=RC[rg[s]||0]+'0.95)';ctx.lineWidth=1.5;ctx.stroke();}
+    if(t<110) t+=2; else setTimeout(gen,800);
+    requestAnimationFrame(draw);
+  })();
+})();
+
+(function cardEf(){
+  const cv=document.getElementById('card-ef');if(!cv)return;
+  resizeCv(cv);
+  let pts=[],best=null,t=0;
+  const A=[{ret:14,vol:22},{ret:13,vol:20},{ret:11,vol:18},{ret:4,vol:12},{ret:6,vol:15}];
+  function rw(n){const w=Array.from({length:n},()=>-Math.log(Math.random()));const s=w.reduce((a,b)=>a+b,0);return w.map(x=>x/s);}
+  function gen(){
+    pts=[];best=null;let bs=-Infinity;
+    for(let i=0;i<280;i++){const w=rw(A.length);const ret=A.reduce((s,a,j)=>s+w[j]*a.ret,0);const vol=Math.sqrt(A.reduce((s,a,j)=>s+Math.pow(w[j]*a.vol/100,2),0))*100;const sh=(ret-4.3)/vol;pts.push({x:vol,y:ret,s:sh});if(sh>bs){bs=sh;best={x:vol,y:ret};}}
+    t=0;
+  }
+  gen();
+  (function draw(){
+    const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,T=Math.min(t,pts.length);
+    ctx.clearRect(0,0,W,H);
+    const minV=Math.min(...pts.map(p=>p.x))-1,maxV=Math.max(...pts.map(p=>p.x))+1;
+    const minR=Math.min(...pts.map(p=>p.y))-1,maxR=Math.max(...pts.map(p=>p.y))+1;
+    const toX=v=>W*.04+(W*.92)*(v-minV)/(maxV-minV),toY=r=>H*.04+(H*.92)*(maxR-r)/(maxR-minR);
+    const mx=Math.max(...pts.slice(0,T).map(p=>p.s)||[0]),mn=Math.min(...pts.slice(0,T).map(p=>p.s)||[0]);
+    pts.slice(0,T).forEach(p=>{const t2=Math.max(0,(p.s-mn)/(mx-mn||1));ctx.beginPath();ctx.arc(toX(p.x),toY(p.y),2,0,Math.PI*2);ctx.fillStyle='rgba('+Math.round(192*t2+15*(1-t2))+','+Math.round(132*t2+15*(1-t2))+','+Math.round(252*t2+15*(1-t2))+','+(0.12+t2*.75)+')';ctx.fill();});
+    if(best&&T>60){const bx=toX(best.x),by=toY(best.y);ctx.beginPath();ctx.arc(bx,by,4,0,Math.PI*2);ctx.fillStyle='#c084fc';ctx.fill();}
+    if(t<pts.length) t+=4; else setTimeout(gen,1600);
+    requestAnimationFrame(draw);
+  })();
+})();
+
+// ── FULL MC ────────────────────────────────────────────────────────────────
+let mcPaths=[],mcMed=[],mcT=0;
+function startMc(){
+  const cv=document.getElementById('ex-mc');
+  resizeCv(cv);
+  genMc();
+  drawMc(cv);
+}
+function drawMc(cv){
+  const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  if(!paused.mc){
+    ctx.fillStyle='rgba(4,4,4,.18)';ctx.fillRect(0,0,W,H);
+    const steps=mcPaths[0]?mcPaths[0].length-1:251,sw=(W-58)/steps;
+    const all=mcPaths.flat(),minV=Math.min(...all),maxV=Math.max(...all);
+    const PAD=0.06,toY=v=>H*PAD+(H*(1-PAD*2))*(maxV-v)/(maxV-minV||1);
+    // Y axis
+    ctx.font="10px 'JetBrains Mono',monospace";ctx.fillStyle='rgba(255,255,255,.22)';ctx.textAlign='right';
+    for(let i=0;i<=4;i++){const v=minV+(maxV-minV)*i/4,y=toY(v);ctx.fillText(fmt(v),54,y+3.5);ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(58,y);ctx.lineTo(W,y);ctx.stroke();}
+    // start line
+    const y0=toY(10000);ctx.setLineDash([5,5]);ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(58,y0);ctx.lineTo(W,y0);ctx.stroke();ctx.setLineDash([]);
+    const T=Math.min(mcT,steps);
+    mcPaths.forEach((p,i)=>{ctx.beginPath();ctx.moveTo(58,toY(p[0]));for(let t=1;t<=T;t++) ctx.lineTo(58+t*sw,toY(p[t]));ctx.strokeStyle=COLORS[i%COLORS.length]+'50';ctx.lineWidth=1.1;ctx.stroke();});
+    if(T>2){ctx.beginPath();ctx.moveTo(58,toY(mcMed[0]));for(let t=1;t<=T;t++) ctx.lineTo(58+t*sw,toY(mcMed[t]));ctx.strokeStyle='rgba(66,217,245,.95)';ctx.lineWidth=2.8;ctx.stroke();const tx=58+T*sw,ty=toY(mcMed[T]);ctx.beginPath();ctx.arc(tx,ty,6,0,Math.PI*2);ctx.fillStyle='rgba(66,217,245,.15)';ctx.fill();ctx.beginPath();ctx.arc(tx,ty,3.5,0,Math.PI*2);ctx.fillStyle='#42d9f5';ctx.fill();}
+    // X axis
+    const yr=parseInt(document.getElementById('mc-yr').value);
+    ctx.fillStyle='rgba(255,255,255,.2)';ctx.textAlign='center';ctx.font="10px 'JetBrains Mono',monospace";
+    for(let m=0;m<=yr*12;m+=Math.max(1,Math.round(yr*12/6))){const x=58+m/12*252*sw;ctx.fillText(m+'m',x,H-6);}
+    const spd=parseInt(document.getElementById('mc-speed')?.value||2);
+    if(T<steps) mcT+=spd; else genMc();
+  }
+  rafs.mc=requestAnimationFrame(()=>drawMc(cv));
+}
+function genMc(){
+  const ret=+document.getElementById('mc-ret').value/100;
+  const vol=+document.getElementById('mc-vol').value/100;
+  const yr=+document.getElementById('mc-yr').value;
+  const steps=yr*252,mu=ret/252,sig=vol/Math.sqrt(252);
+  mcPaths=[];
+  for(let i=0;i<120;i++){const p=[10000];for(let t=1;t<=steps;t++) p.push(p[p.length-1]*Math.exp((mu-.5*sig*sig)+sig*randn()));mcPaths.push(p);}
+  mcMed=[];for(let t=0;t<=steps;t++){const v=mcPaths.map(p=>p[t]).sort((a,b)=>a-b);mcMed.push(v[Math.floor(v.length/2)]);}
+  const f=mcPaths.map(p=>p[p.length-1]).sort((a,b)=>a-b);
+  document.getElementById('mc-p5').textContent=fmt(f[Math.floor(f.length*.05)]);
+  document.getElementById('mc-med').textContent=fmt(f[Math.floor(f.length*.5)]);
+  document.getElementById('mc-p95').textContent=fmt(f[Math.floor(f.length*.95)]);
+  document.getElementById('mc-pp').textContent=Math.round(f.filter(v=>v>10000).length/f.length*100)+'%';
+  mcT=1;
+}
+function mcUpd(){
+  document.getElementById('mc-ret-v').textContent=document.getElementById('mc-ret').value+'%';
+  document.getElementById('mc-vol-v').textContent=document.getElementById('mc-vol').value+'%';
+  document.getElementById('mc-yr-v').textContent=document.getElementById('mc-yr').value+'yr';
+  genMc();
+}
+
+// ── FULL REGIME ────────────────────────────────────────────────────────────
+let rgPr=[],rgRg=[],rgT=0;
+function startRg(){
+  const cv=document.getElementById('ex-rg');
+  resizeCv(cv);
+  genRg();
+  drawRg(cv);
+}
+function drawRg(cv){
+  const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  if(!paused.rg){
+    const T=Math.min(rgT,299),sw=W/300;
+    const mn=Math.min(...rgPr.slice(0,T+1)),mx=Math.max(...rgPr.slice(0,T+1));
+    const toY=v=>H*.05+(H*.9)*(mx-v)/(mx-mn||1);
+    const RC=['rgba(181,245,66,','rgba(245,95,95,','rgba(192,132,252,'];
+    ctx.clearRect(0,0,W,H);
+    let s0=0,cur=rgRg[0];
+    for(let s=1;s<=T;s++){if(rgRg[s]!==cur||s===T){ctx.fillStyle=RC[cur]+'0.07)';ctx.fillRect(s0*sw,0,(s-s0)*sw,H);s0=s;cur=rgRg[s];}}
+    ctx.beginPath();ctx.moveTo(0,toY(rgPr[0]));for(let s=1;s<=T;s++) ctx.lineTo(s*sw,toY(rgPr[s]));ctx.strokeStyle='rgba(255,255,255,.1)';ctx.lineWidth=1;ctx.stroke();
+    for(let s=1;s<=T;s++){ctx.beginPath();ctx.moveTo((s-1)*sw,toY(rgPr[s-1]));ctx.lineTo(s*sw,toY(rgPr[s]));ctx.strokeStyle=RC[rgRg[s]||0]+'0.95)';ctx.lineWidth=2;ctx.stroke();}
+    ctx.font="11px 'JetBrains Mono',monospace";
+    [['● BULL','rgba(181,245,66,.8)'],['● BEAR','rgba(245,95,95,.8)'],['● VOLATILE','rgba(192,132,252,.8)']].forEach(([l,c],i)=>{ctx.fillStyle=c;ctx.fillText(l,16,H-42+i*17);});
+    if(rgT<300) rgT+=2; else setTimeout(genRg,1400);
+  }
+  rafs.rg=requestAnimationFrame(()=>drawRg(cv));
+}
+function genRg(){
+  rgPr=[100];rgRg=[];let r=0,rt=0,rd=28+Math.floor(Math.random()*40),b=0,br=0,v=0,sh=0;
+  for(let t=1;t<300;t++){rt++;if(rt>rd){const nr=Math.floor(Math.random()*3);if(nr!==r)sh++;r=nr;rt=0;rd=22+Math.floor(Math.random()*48);}const mu=[.0008,-.0006,0][r],sig=[.012,.016,.028][r];rgPr.push(Math.max(5,rgPr[rgPr.length-1]*Math.exp((mu-.5*sig*sig)+sig*randn())));rgRg.push(r);if(r===0)b++;else if(r===1)br++;else v++;}
+  document.getElementById('rg-b').textContent=b;
+  document.getElementById('rg-br').textContent=br;
+  document.getElementById('rg-v').textContent=v;
+  document.getElementById('rg-sh').textContent=sh;
+  rgT=1;
+}
+
+// ── FULL FRONTIER ──────────────────────────────────────────────────────────
+let efPts=[],efBest=null,efT=0;
+function startEf(){
+  const cv=document.getElementById('ex-ef');
+  resizeCv(cv);
+  genEf();
+  drawEf(cv);
+}
+function drawEf(cv){
+  const ctx=cv.getContext('2d'),W=cv.width,H=cv.height;
+  if(!paused.ef){
+    const T=Math.min(efT,efPts.length);
+    const PL=64,PR=16,PT=24,PB=36;
+    const minV=Math.min(...efPts.map(p=>p.x)),maxV=Math.max(...efPts.map(p=>p.x));
+    const minR=Math.min(...efPts.map(p=>p.y)),maxR=Math.max(...efPts.map(p=>p.y));
+    const vPad=(maxV-minV)*.08,rPad=(maxR-minR)*.1;
+    const toX=v=>PL+(W-PL-PR)*(v-(minV-vPad))/((maxV+vPad)-(minV-vPad));
+    const toY=r=>PT+(H-PT-PB)*((maxR+rPad)-r)/((maxR+rPad)-(minR-rPad));
+    const FONT="9px 'JetBrains Mono',monospace";
+    ctx.clearRect(0,0,W,H);
+    // Background zones
+    const badX=toX(minV+(maxV-minV)*.55),goodY=toY(minR+(maxR-minR)*.6);
+    ctx.fillStyle='rgba(245,95,95,.025)';ctx.fillRect(badX,goodY,W-PR-badX,H-PB-goodY);
+    ctx.fillStyle='rgba(181,245,66,.018)';ctx.fillRect(PL,PT,badX-PL,goodY-PT);
+    // Grid
+    ctx.strokeStyle='rgba(255,255,255,.04)';ctx.lineWidth=.5;
+    for(let i=0;i<=5;i++){const r=minR+i*(maxR-minR)/5,y=toY(r);ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);ctx.stroke();ctx.fillStyle='rgba(255,255,255,.22)';ctx.font=FONT;ctx.textAlign='right';ctx.fillText(r.toFixed(0)+'%',PL-4,y+3);}
+    for(let i=0;i<=5;i++){const v=minV+i*(maxV-minV)/5,x=toX(v);ctx.beginPath();ctx.moveTo(x,PT);ctx.lineTo(x,H-PB);ctx.stroke();ctx.fillStyle='rgba(255,255,255,.18)';ctx.font=FONT;ctx.textAlign='center';ctx.fillText(v.toFixed(0)+'%',x,H-PB+12);}
+    // Zone labels
+    ctx.font=FONT;ctx.fillStyle='rgba(245,95,95,.32)';ctx.textAlign='right';ctx.fillText('HIGH RISK / LOW RETURN',W-PR-4,H-PB-8);
+    ctx.fillStyle='rgba(181,245,66,.28)';ctx.textAlign='left';ctx.fillText('LOW RISK / HIGH RETURN',PL+4,PT+14);
+    // Axis labels
+    ctx.fillStyle='rgba(255,255,255,.28)';ctx.font="10px 'JetBrains Mono',monospace";
+    ctx.textAlign='center';ctx.fillText('Risk (Volatility) →',PL+(W-PL-PR)/2,H-2);
+    ctx.save();ctx.translate(12,PT+(H-PT-PB)/2);ctx.rotate(-Math.PI/2);ctx.fillText('↑ Expected Return',0,0);ctx.restore();
+    // Dots
+    const mx=Math.max(...efPts.slice(0,T).map(p=>p.s)||[0]),mn2=Math.min(...efPts.slice(0,T).map(p=>p.s)||[0]);
+    efPts.slice(0,T).forEach(p=>{const t2=Math.max(0,(p.s-mn2)/(mx-mn2||1));ctx.beginPath();ctx.arc(toX(p.x),toY(p.y),2.5,0,Math.PI*2);ctx.fillStyle='rgba('+Math.round(192*t2+18*(1-t2))+','+Math.round(132*t2+18*(1-t2))+','+Math.round(252*t2+18*(1-t2))+','+(0.12+t2*.82)+')';ctx.fill();});
+    // Frontier curve
+    if(T===efPts.length){
+      const buckets={};efPts.forEach(p=>{const k=Math.round(p.x*2)/2;if(!buckets[k]||p.y>buckets[k]) buckets[k]=p.y;});
+      const frontier=Object.keys(buckets).sort((a,b)=>+a-+b).map(k=>({x:+k,y:buckets[k]}));
+      if(frontier.length>2){ctx.beginPath();ctx.moveTo(toX(frontier[0].x),toY(frontier[0].y));for(let i=1;i<frontier.length;i++) ctx.lineTo(toX(frontier[i].x),toY(frontier[i].y));ctx.strokeStyle='rgba(66,217,245,.35)';ctx.lineWidth=2;ctx.setLineDash([6,3]);ctx.stroke();ctx.setLineDash([]);const mid=frontier[Math.floor(frontier.length/2)];ctx.fillStyle='rgba(66,217,245,.5)';ctx.font=FONT;ctx.textAlign='left';ctx.fillText('← Efficient Frontier',toX(mid.x)+6,toY(mid.y)-8);}
+    }
+    // Best point
+    if(efBest&&T>200){
+      const bx=toX(efBest.x),by=toY(efBest.y),pulse=(Math.sin(Date.now()*.004)+1)/2;
+      ctx.beginPath();ctx.arc(bx,by,20+pulse*8,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,.06)';ctx.fill();
+      ctx.beginPath();ctx.arc(bx,by,9+pulse*2,0,Math.PI*2);ctx.fillStyle='rgba(192,132,252,.15)';ctx.fill();
+      ctx.beginPath();ctx.arc(bx,by,5,0,Math.PI*2);ctx.fillStyle='#c084fc';ctx.fill();
+      const lx=bx+32,ly=by-36;
+      ctx.strokeStyle='rgba(192,132,252,.4)';ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(bx,by-6);ctx.lineTo(lx-2,ly+12);ctx.stroke();ctx.setLineDash([]);
+      ctx.fillStyle='rgba(192,132,252,.85)';ctx.font="10px 'JetBrains Mono',monospace";ctx.textAlign='left';ctx.fillText('MAX SHARPE',lx,ly);
+      ctx.fillStyle='rgba(255,255,255,.3)';ctx.font=FONT;ctx.fillText('Best risk/return mix',lx,ly+13);
+      ctx.strokeStyle='rgba(192,132,252,.12)';ctx.lineWidth=.5;ctx.setLineDash([3,3]);
+      ctx.beginPath();ctx.moveTo(PL,by);ctx.lineTo(bx,by);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(bx,H-PB);ctx.lineTo(bx,by);ctx.stroke();
+      ctx.setLineDash([]);
+    }
+    if(efT<efPts.length) efT+=8; else setTimeout(genEf,2200);
+  }
+  rafs.ef=requestAnimationFrame(()=>drawEf(cv));
+}
+function genEf(){
+  const A=[{ret:14,vol:22},{ret:13,vol:20},{ret:11,vol:18},{ret:4,vol:12},{ret:6,vol:15}];
+  function rw(n){const w=Array.from({length:n},()=>-Math.log(Math.random()));const s=w.reduce((a,b)=>a+b,0);return w.map(x=>x/s);}
+  efPts=[];efBest=null;let bs=-Infinity;
+  for(let i=0;i<2000;i++){const w=rw(A.length);const ret=A.reduce((s,a,j)=>s+w[j]*a.ret,0);const vol=Math.sqrt(A.reduce((s,a,j)=>s+Math.pow(w[j]*a.vol/100,2),0))*100;const sh=(ret-4.3)/vol;efPts.push({x:vol,y:ret,s:sh});if(sh>bs){bs=sh;efBest={x:vol,y:ret,s:sh};}}
+  document.getElementById('ef-sharpe').textContent=bs.toFixed(2);
+  document.getElementById('ef-ret').textContent=efBest.y.toFixed(1)+'%';
+  document.getElementById('ef-vol').textContent=efBest.x.toFixed(1)+'%';
+  document.getElementById('ef-ct').textContent='2,000';
+  efT=0;
+}
+</script>
+</body>
+</html>
