@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manit Bhasin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080808;--bg2:#0f0f0f;--bg3:#161616;--bg4:#1c1c1c;
+  --border:rgba(255,255,255,0.06);--border-b:rgba(255,255,255,0.12);
+  --text:#eae8e2;--muted:#68675f;--faint:#222220;
+  --accent:#b5f542;--blue:#42d9f5;--amber:#f5a742;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.7;cursor:none;overflow-x:hidden;}
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.018) 2px,rgba(0,0,0,0.018) 4px);pointer-events:none;z-index:9990;}
+
+/* CURSOR */
+#cur{position:fixed;width:5px;height:5px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
+#cur-r{position:fixed;width:24px;height:24px;border:1px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:.25;transition:width .2s,height .2s,opacity .2s;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:18px 52px;border-bottom:1px solid var(--border);background:rgba(8,8,8,.93);backdrop-filter:blur(20px);}
+.logo{font-family:var(--sans);font-size:16px;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.2px;}
+.logo span{color:var(--accent);}
+.nav-links{display:flex;gap:34px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:11px;letter-spacing:.07em;transition:color .2s;}
+.nav-links a::before{content:'/ ';color:var(--accent);opacity:.4;}
+.nav-links a:hover,.nav-links a.on{color:var(--text);}
+.nav-r{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
+.pdot{width:5px;height:5px;background:var(--accent);border-radius:50%;animation:blink 2.4s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+#navtime{font-size:10px;color:var(--muted);letter-spacing:.06em;font-family:var(--mono);}
+
+/* TICKER — bigger */
+.ticker-wrap{width:100%;overflow:hidden;border-bottom:1px solid var(--border);background:var(--bg2);padding:13px 0;position:relative;z-index:100;}
+.ticker-wrap::before,.ticker-wrap::after{content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;}
+.ticker-wrap::before{left:0;background:linear-gradient(to right,var(--bg2),transparent);}
+.ticker-wrap::after{right:0;background:linear-gradient(to left,var(--bg2),transparent);}
+.ticker-track{display:flex;animation:ticker 40s linear infinite;width:max-content;}
+.ticker-track:hover{animation-play-state:paused;}
+.tick-item{display:flex;align-items:center;gap:12px;padding:0 32px;font-size:12px;letter-spacing:.05em;border-right:1px solid var(--border);white-space:nowrap;}
+.tick-sym{color:var(--text);font-weight:700;font-size:12px;}
+.tick-val{color:var(--muted);font-size:12px;}
+.tick-chg{font-size:11px;font-weight:500;}
+.up{color:var(--accent);}.dn{color:#f55f5f;}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:120px 52px 80px;position:relative;overflow:hidden;}
+.gbg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 100% 80% at 50% 100%,black 0%,transparent 100%);}
+.orb{position:absolute;top:-10%;right:-5%;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(181,245,66,.07) 0%,rgba(181,245,66,.02) 40%,transparent 70%);pointer-events:none;animation:orbpulse 6s ease-in-out infinite;}
+.orb2{position:absolute;bottom:5%;left:-8%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(66,217,245,.05) 0%,transparent 65%);pointer-events:none;animation:orbpulse 8s ease-in-out infinite reverse;}
+@keyframes orbpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.65}}
+.particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.p{position:absolute;width:1px;height:1px;background:var(--accent);border-radius:50%;opacity:0;animation:pfloat var(--d,8s) var(--delay,0s) infinite;}
+@keyframes pfloat{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.4}90%{opacity:.1}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx,20px))}}
+
+/* Typewriter cursor on name */
+.eyebrow{font-size:10px;color:var(--accent);letter-spacing:.16em;margin-bottom:16px;opacity:0;animation:up .5s .1s forwards;}
+.eyebrow::before{content:'> ';}
+.hname{font-family:var(--sans);font-size:clamp(48px,8.5vw,118px);font-weight:800;line-height:.86;letter-spacing:-3.5px;opacity:0;animation:up .65s .22s forwards;}
+.hname .d{color:var(--muted);font-weight:400;}
+.hdesc{max-width:460px;margin-top:26px;font-size:13px;color:var(--muted);line-height:1.95;opacity:0;animation:up .65s .38s forwards;}
+.hchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;opacity:0;animation:up .65s .5s forwards;}
+.chip{font-size:10px;padding:4px 11px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.07em;transition:border-color .2s,color .2s;}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.hscroll{position:absolute;bottom:36px;right:52px;font-size:10px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.12em;opacity:0;animation:up .5s .68s forwards;}
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* SECTIONS */
+section{padding:88px 52px;border-top:1px solid var(--border);}
+.sh{display:flex;align-items:baseline;gap:14px;margin-bottom:52px;}
+.sn{font-size:10px;color:var(--accent);letter-spacing:.12em;flex-shrink:0;}
+.st{font-family:var(--sans);font-size:30px;font-weight:700;letter-spacing:-1px;}
+.sr{flex:1;height:1px;background:var(--border);margin-left:12px;}
+
+/* PROJECTS */
+.pgrid{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);}
+.pc{background:var(--bg);position:relative;overflow:hidden;transition:background .2s;cursor:none;}
+.pc:hover{background:var(--bg2);}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--ca,var(--accent));transform:scaleX(0);transform-origin:left;transition:transform .4s ease;}
+.pc:hover::before{transform:scaleX(1);}
+.pc::after{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(181,245,66,.025),transparent 40%);opacity:0;transition:opacity .3s;pointer-events:none;}
+.pc:hover::after{opacity:1;}
+.pc-top{padding:36px 40px 24px;}
+.pc-tag{font-size:10px;color:var(--ca,var(--accent));letter-spacing:.13em;text-transform:uppercase;margin-bottom:12px;}
+.pc-idx{font-size:11px;color:var(--muted);margin-bottom:4px;}
+.pc-title{font-family:var(--sans);font-size:23px;font-weight:700;letter-spacing:-.4px;line-height:1.15;margin-bottom:12px;}
+.pc-desc{font-size:12px;color:var(--muted);line-height:1.88;margin-bottom:20px;max-width:700px;}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px;}
+.tag{font-size:10px;padding:2px 9px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.05em;}
+.rbadges{display:flex;gap:8px;flex-wrap:wrap;}
+.rb{font-size:10px;padding:3px 10px;border:1px solid;letter-spacing:.07em;}
+.rb-bull{border-color:#639922;color:#639922;}.rb-bear{border-color:#E24B4A;color:#E24B4A;}.rb-vol{border-color:#EF9F27;color:#EF9F27;}
+.pc-links{display:flex;gap:22px;padding:0 40px 24px;flex-wrap:wrap;align-items:center;}
+.plink{font-size:11px;color:var(--ca,var(--accent));text-decoration:none;letter-spacing:.07em;transition:letter-spacing .25s;display:flex;align-items:center;gap:5px;}
+.plink:hover{letter-spacing:.13em;}
+.plink svg{width:11px;height:11px;opacity:.6;}
+.live-badge{font-size:9px;padding:2px 8px;border:1px solid var(--accent);color:var(--accent);letter-spacing:.1em;animation:livepulse 2s infinite;}
+@keyframes livepulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* EXPLAINER */
+.explainer{border-top:1px solid var(--border);}
+.exp-toggle{width:100%;background:none;border:none;color:var(--muted);font-family:var(--mono);font-size:11px;letter-spacing:.07em;padding:14px 40px;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:color .2s,background .2s;}
+.exp-toggle:hover{color:var(--text);background:var(--bg3);}
+.exp-arrow{transition:transform .28s;font-style:normal;font-size:12px;}
+.exp-toggle.open .exp-arrow{transform:rotate(180deg);}
+.exp-body{display:none;padding:28px 40px 36px;border-top:1px solid var(--border);background:var(--bg3);}
+.exp-body.open{display:block;}
+.exp-sec{margin-bottom:28px;}.exp-sec:last-child{margin-bottom:0;}
+.exp-lbl{font-size:10px;color:var(--ca,var(--accent));letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px;}
+.exp-txt{font-size:12px;color:var(--muted);line-height:1.95;}
+.exp-txt strong{color:var(--text);font-weight:500;}
+.exp-txt p{margin-bottom:10px;}.exp-txt p:last-child{margin-bottom:0;}
+.math-block{background:var(--bg4);border:1px solid var(--border);padding:14px 18px;margin:11px 0;}
+.mrow{display:flex;align-items:baseline;gap:14px;padding:6px 0;border-bottom:1px solid var(--faint);}
+.mrow:last-child{border-bottom:none;}
+.msym{color:var(--accent);font-size:12px;min-width:170px;flex-shrink:0;}
+.mdef{color:var(--muted);font-size:11px;line-height:1.6;}
+.steps{display:flex;flex-direction:column;}
+.step{display:flex;gap:16px;padding:11px 0;border-bottom:1px solid var(--faint);}
+.step:last-child{border-bottom:none;}
+.step-n{font-size:11px;color:var(--ca,var(--accent));min-width:22px;flex-shrink:0;padding-top:2px;}
+.step-txt{font-size:12px;color:var(--muted);line-height:1.8;}
+.step-txt strong{color:var(--text);font-weight:500;}
+.code-snip{background:var(--bg4);border:1px solid var(--border);padding:14px 17px;font-size:11px;line-height:2.1;margin:11px 0;}
+.kw{color:var(--blue);}.fn{color:var(--accent);}.str{color:var(--amber);}.cm{color:#383832;}
+.fw-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin:11px 0;}
+.fw-step{background:var(--bg4);padding:15px 18px;}
+.fw-n{font-size:10px;color:var(--blue);letter-spacing:.1em;margin-bottom:4px;}
+.fw-title{font-size:12px;color:var(--text);font-weight:500;margin-bottom:3px;}
+.fw-desc{font-size:11px;color:var(--muted);line-height:1.7;}
+
+/* CERTIFICATIONS */
+#certs{background:var(--bg2);}
+.certs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.cert-card{background:var(--bg2);padding:22px 26px;display:flex;align-items:flex-start;gap:16px;transition:background .2s;cursor:none;}
+.cert-card:hover{background:var(--bg3);}
+.cert-icon{width:36px;height:36px;flex-shrink:0;background:rgba(66,217,245,.07);border:1px solid rgba(66,217,245,.15);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--blue);margin-top:2px;}
+.cert-body{flex:1;}
+.cert-platform{font-size:9px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;}
+.cert-name{font-size:13px;color:var(--text);font-weight:500;margin-bottom:5px;line-height:1.4;}
+.cert-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.cert-date{font-size:10px;color:var(--muted);}
+.cert-grade{font-size:10px;padding:1px 8px;border:1px solid;letter-spacing:.06em;}
+.grade-100{border-color:var(--accent);color:var(--accent);}
+.grade-80{border-color:var(--blue);color:var(--blue);}
+.cert-preview-btn{background:none;border:none;font-family:var(--mono);font-size:10px;color:var(--muted);cursor:pointer;padding:0;margin-top:8px;letter-spacing:.05em;transition:color .2s;display:block;}
+.cert-preview-btn:hover{color:var(--blue);}
+.cert-preview{display:none;margin-top:12px;}
+.cert-preview.open{display:block;}
+.cert-img-placeholder{background:var(--bg4);border:1px solid var(--border);padding:20px;display:flex;flex-direction:column;gap:6px;font-size:11px;color:var(--text);}
+
+/* ABOUT */
+#about{background:var(--bg);}
+.about-inner{max-width:640px;}
+.ap{font-size:13px;color:var(--muted);line-height:2;margin-bottom:14px;}
+.ap:last-child{margin-bottom:0;}
+.ap strong{color:var(--text);font-weight:500;}
+
+/* CONTACT */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:start;}
+.cbig{font-family:var(--sans);font-size:clamp(32px,4vw,54px);font-weight:800;line-height:1.05;letter-spacing:-1.5px;margin-bottom:16px;}
+.cbig span{color:var(--accent);}
+.csub{font-size:12px;color:var(--muted);line-height:1.9;max-width:340px;}
+.crows{display:flex;flex-direction:column;}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text);transition:padding-left .2s;cursor:none;}
+.crow:hover{padding-left:10px;}
+.crow:hover .arr{color:var(--accent);}
+.cr-p{font-size:10px;color:var(--muted);letter-spacing:.07em;margin-bottom:2px;}
+.cr-v{font-size:13px;font-family:var(--sans);font-weight:600;}
+.arr{font-size:18px;color:var(--muted);transition:color .2s;}
+
+footer{padding:24px 52px;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:11px;color:var(--muted);}
+footer b{color:var(--accent);font-weight:400;}
+
+/* REVEAL */
+.r{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease;}
+.r.on{opacity:1;transform:translateY(0);}
+
+::-webkit-scrollbar{width:2px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);}
+
+@media(max-width:860px){
+  nav{padding:14px 20px;}.nav-links{display:none;}
+  #hero{padding:96px 20px 56px;}section{padding:56px 20px;}
+  .cgrid,.certs-grid,.fw-grid{grid-template-columns:1fr;}
+  .orb,.orb2{display:none;}
+  footer{padding:20px;flex-direction:column;gap:5px;}
+}
+</style>
+</head>
+<body>
+<div id="cur"></div><div id="cur-r"></div>
+
+<nav>
+  <a class="logo" href="#hero">MB<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#certs">certifications</a></li>
+    <li><a href="#about">about</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <div class="nav-r">
+    <span id="navtime"></span>
+    <span style="color:var(--faint)">·</span>
+    <div class="pdot"></div>
+    <span>open to opportunities</span>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div style="margin-top:61px">
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="gbg"></div>
+  <div class="orb"></div>
+  <div class="orb2"></div>
+  <div class="particles" id="particles"></div>
+  <div class="eyebrow">IB Diploma · Grade 11 · India</div>
+  <h1 class="hname">Manit<br><span class="d">Bhasin</span></h1>
+  <p class="hdesc">Building quantitative finance models and AI tools for equity research. Interested in how financial theory holds up against real data.</p>
+  <div class="hchips">
+    <span class="chip">Financial Modelling</span>
+    <span class="chip">Econometrics</span>
+    <span class="chip">Hidden Markov Models</span>
+    <span class="chip">AI Tools</span>
+    <span class="chip">Equity Research</span>
+    <span class="chip">DCF Valuation</span>
+  </div>
+  <div class="hscroll">scroll ↓</div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="sh r"><span class="sn">01</span><h2 class="st">Projects</h2><div class="sr"></div></div>
+  <div class="pgrid">
+
+    <!-- PROJECT 1: REGIME ENGINE -->
+    <div class="pc r" style="--ca:var(--accent)">
+      <div class="pc-top">
+        <div class="pc-tag">Quantitative Finance · Machine Learning</div>
+        <div class="pc-idx">001</div>
+        <h3 class="pc-title">Market Regime Detection Engine</h3>
+        <p class="pc-desc">A machine learning model that reads a simulated price chart and labels each day as a bull market, bear market, or high-volatility period. Adjust the sliders to change simulation parameters and watch regimes shift in real time.</p>
+        <div class="tags"><span class="tag">Hidden Markov Model</span><span class="tag">Geometric Brownian Motion</span><span class="tag">Markov Chains</span><span class="tag">Chart.js</span><span class="tag">Vanilla JS</span></div>
+        <div class="rbadges"><span class="rb rb-bull">● BULL</span><span class="rb rb-bear">● BEAR</span><span class="rb rb-vol">● VOLATILE</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" href="https://manitbhasin6-commits.github.io/market-regime-detection" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" href="https://github.com/manitbhasin6-commits/market-regime-detection" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body">
+          <div class="exp-sec">
+            <div class="exp-lbl">Plain English</div>
+            <div class="exp-txt">
+              <p>Stock markets cycle through three modes: trending up (bull), trending down (bear), and swinging wildly (volatile). These are called <strong>regimes</strong>. The problem is you can't directly observe which regime you're in — it's hidden. This model infers it from daily price movements and colours each day accordingly.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl">The maths</div>
+            <div class="exp-txt"><p><strong>Step 1 — Geometric Brownian Motion</strong> simulates the price path. Each day's move = drift (μ) + random shock (σ·dW).</p></div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym">dS = μS·dt + σS·dW</span><span class="mdef">Price S changes by drift term plus a random normal shock each day.</span></div>
+              <div class="mrow"><span class="msym">μ = drift</span><span class="mdef">Bull: +0.08%/day · Bear: −0.06%/day · Volatile: +0.02%/day</span></div>
+              <div class="mrow"><span class="msym">σ = volatility</span><span class="mdef">Volatile regime has 3× higher σ — prices jump around wildly.</span></div>
+            </div>
+            <div class="exp-txt"><p><strong>Step 2 — Hidden Markov Model.</strong> The transition matrix governs how likely each regime is to persist or switch tomorrow.</p></div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym">P(Bull→Bull) = 0.95</span><span class="mdef">Regimes are sticky. Bull markets tend to stay bull.</span></div>
+              <div class="mrow"><span class="msym">P(Bear→Bear) = 0.93</span><span class="mdef">Bear markets also persist once they start.</span></div>
+              <div class="mrow"><span class="msym">P(Volatile→Volatile) = 0.90</span><span class="mdef">Volatility clusters — chaotic days follow chaotic days.</span></div>
+            </div>
+            <div class="code-snip">
+              <div><span class="kw">function</span> <span class="fn">sampleRegime</span>(current, rng) {</div>
+              <div>&nbsp;&nbsp;<span class="kw">let</span> cum = <span class="str">0</span>, r = <span class="fn">rng</span>();</div>
+              <div>&nbsp;&nbsp;<span class="kw">for</span> (<span class="kw">let</span> j = <span class="str">0</span>; j &lt; <span class="str">3</span>; j++) {</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;cum += trans[current][j];</div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">if</span> (r &lt; cum) <span class="kw">return</span> j;</div>
+              <div>&nbsp;&nbsp;}</div><div>}</div>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl">How to use it</div>
+            <div class="steps">
+              <div class="step"><span class="step-n">01</span><span class="step-txt"><strong>Trading days</strong> — length of simulation. 252 = one year.</span></div>
+              <div class="step"><span class="step-n">02</span><span class="step-txt"><strong>Volatility scale</strong> — amplifies shocks. Set high to simulate a crisis.</span></div>
+              <div class="step"><span class="step-n">03</span><span class="step-txt"><strong>Random seed</strong> — each seed = a different reproducible price path.</span></div>
+              <div class="step"><span class="step-n">04</span><span class="step-txt"><strong>Re-run</strong> — regenerates everything. Watch regime statistics update.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 2: DCF -->
+    <div class="pc r" style="--ca:var(--amber)">
+      <div class="pc-top">
+        <div class="pc-tag">Investment Banking · Financial Modelling</div>
+        <div class="pc-idx">002</div>
+        <h3 class="pc-title">DCF Valuation Model</h3>
+        <p class="pc-desc">A complete, interactive discounted cash flow model — full income statement, cash flow statement, balance sheet, WACC build-up, and enterprise value bridge. Every assumption is live-editable. Includes sensitivity tables for WACC vs terminal growth rate and WACC vs revenue growth.</p>
+        <div class="tags"><span class="tag">DCF</span><span class="tag">WACC</span><span class="tag">Financial Modelling</span><span class="tag">Chart.js</span><span class="tag">Vanilla JS</span><span class="tag">IB/PE</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:var(--amber)" href="https://manitbhasin6-commits.github.io/dcf-valuation-model" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:var(--amber)" href="https://github.com/manitbhasin6-commits/dcf-valuation-model" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:var(--amber);color:var(--amber)">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:var(--amber)"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:var(--amber)">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">Plain English — what a DCF is</div>
+            <div class="exp-txt">
+              <p>A company is worth the sum of all the cash it will ever generate, adjusted for the fact that money today is worth more than money tomorrow. That's the entire idea behind a DCF — <strong>Discounted Cash Flow</strong>.</p>
+              <p>You project how much free cash the business will produce over the next 5 years, then estimate what it'll be worth after that (the terminal value), then "discount" all of it back to today's dollars using a rate that reflects the risk involved. What you're left with is what the business is theoretically worth right now.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">The maths — WACC and the valuation formula</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:var(--amber)">WACC = Ke·we + Kd(1−t)·wd</span><span class="mdef">Weighted average of cost of equity and after-tax cost of debt.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">Ke = Rf + β × ERP</span><span class="mdef">Cost of equity via CAPM. Higher beta = riskier stock = higher required return.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">FCF = NOPAT + D&A − Capex − ΔNWC</span><span class="mdef">Free cash flow — the actual cash a business generates after reinvestment.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">TV = FCF×(1+g) / (WACC−g)</span><span class="mdef">Terminal value via Gordon Growth. Captures all cash flows beyond Year 5.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">EV = Σ PV(FCF) + PV(TV)</span><span class="mdef">Enterprise Value = sum of discounted FCFs + discounted terminal value.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">Price = (EV − Net Debt) / Shares</span><span class="mdef">Implied share price after subtracting debt and dividing by share count.</span></div>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">How to use it</div>
+            <div class="steps">
+              <div class="step"><span class="step-n" style="color:var(--amber)">01</span><span class="step-txt"><strong>Assumptions tab</strong> — set revenue, margins, growth rates, WACC inputs. Everything recalculates live.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--amber)">02</span><span class="step-txt"><strong>Income Statement / CF / BS tabs</strong> — see the full 3-statement model with historical + 5-year projections and charts.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--amber)">03</span><span class="step-txt"><strong>DCF & WACC tab</strong> — WACC build-up, discounted FCF table, valuation bridge from EV to implied share price.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--amber)">04</span><span class="step-txt"><strong>Sensitivity tab</strong> — heatmap showing implied price across WACC and growth rate ranges. Green = upside, red = downside.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 3: TRADE SIM -->
+    <div class="pc r" style="--ca:#c084fc">
+      <div class="pc-top">
+        <div class="pc-tag">Web App · School · Trading</div>
+        <div class="pc-idx">003</div>
+        <h3 class="pc-title">FHS Trading Simulator</h3>
+        <p class="pc-desc">A live trading competition platform built for and used at Fountainhead School. Students compete in real-time simulated markets — buying and selling positions, tracking P&L, and competing on a live leaderboard. Built and deployed independently.</p>
+        <div class="tags"><span class="tag">Web App</span><span class="tag">Firebase</span><span class="tag">Real-time</span><span class="tag">Trading Simulation</span><span class="tag">Leaderboard</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:#c084fc" href="https://fhs-trade-sim.web.app/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live app</a>
+        <span class="live-badge" style="border-color:#c084fc;color:#c084fc">LIVE</span>
+      </div>
+    </div>
+
+    <!-- PROJECT 4: TICKERDESK -->
+    <div class="pc r" style="--ca:var(--blue)">
+      <div class="pc-top">
+        <div class="pc-tag">AI Tools · Finance · Prompt Engineering</div>
+        <div class="pc-idx">004</div>
+        <h3 class="pc-title">TickerDesk</h3>
+        <p class="pc-desc">Turns Claude into a permanent, hallucination-free equity analyst for any stock. A structured 5-step research framework grounded in Peter Lynch and Charlie Munger — every claim is traced to an exact quote from your uploaded filings. No guessing, no general knowledge filling gaps.</p>
+        <div class="tags"><span class="tag">Claude API</span><span class="tag">Prompt Engineering</span><span class="tag">Equity Research</span><span class="tag">HTML</span><span class="tag">Vanilla JS</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:var(--blue)" href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/manitbhasin6-commits/a256398b0a55a8ea3e71ba09611dd8a6/raw/b1b49fd03befafee84162b7a0da46d6ff58462ba/gistfile1.txt" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:var(--blue)" href="https://gist.github.com/manitbhasin6-commits/a256398b0a55a8ea3e71ba09611dd8a6" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub Gist</a>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:var(--blue)"><span>How it works — plain English + the framework</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:var(--blue)">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--blue)">The problem it solves</div>
+            <div class="exp-txt">
+              <p>Ask an AI "is Apple a good investment?" and it gives a confident answer from training data — possibly outdated, possibly wrong. This is <strong>hallucination</strong>. TickerDesk fixes this by locking Claude to your uploaded filings only. Every claim must start with an exact quote from the source document. No quote = no claim.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--blue)">The 5-step framework</div>
+            <div class="fw-grid">
+              <div class="fw-step"><div class="fw-n">STEP 01</div><div class="fw-title">Build the permanent home</div><div class="fw-desc">One Claude Project per stock with quote-first sourcing rules enforced on every response.</div></div>
+              <div class="fw-step"><div class="fw-n">STEP 02</div><div class="fw-title">Teach the industry</div><div class="fw-desc">Generate a 1,500-word industry overview using Extended Thinking + Research Mode.</div></div>
+              <div class="fw-step"><div class="fw-n">STEP 03</div><div class="fw-title">Upload company history</div><div class="fw-desc">All annual reports and transcripts going back 5+ years. The framework finds official PDF links automatically.</div></div>
+              <div class="fw-step"><div class="fw-n">STEP 04</div><div class="fw-title">Bull &amp; bear cases</div><div class="fw-desc">Peter Lynch pitch (why own it?) and Charlie Munger inversion (how do you lose money?). Both document-grounded.</div></div>
+              <div class="fw-step"><div class="fw-n">STEP 05</div><div class="fw-title">Quarterly update loop</div><div class="fw-desc">Each earnings season: upload the new report, run the update prompt. Guidance vs reality. KPI trends. Management credibility.</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certs">
+  <div class="sh r"><span class="sn">02</span><h2 class="st">Certifications</h2><div class="sr"></div></div>
+  <div class="certs-grid r">
+
+    <div class="cert-card">
+      <div class="cert-icon">✓</div>
+      <div class="cert-body">
+        <div class="cert-platform">Coursera · Project Certificate</div>
+        <div class="cert-name">Investment Risk Management</div>
+        <div class="cert-meta">
+          <span class="cert-date">Jan 2026</span>
+          <span class="cert-grade grade-100">100%</span>
+        </div>
+        <button class="cert-preview-btn" onclick="toggleCert('cert-irm')">View certificate ↓</button>
+        <div class="cert-preview" id="cert-irm">
+          <div class="cert-img-placeholder">
+            <span>Coursera · Investment Risk Management</span>
+            <span style="color:var(--muted);font-size:10px">Completed by Manit Bhasin · Jan 2026 · Grade: 100%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">✓</div>
+      <div class="cert-body">
+        <div class="cert-platform">Coursera · Project Certificate</div>
+        <div class="cert-name">Discounted Cash Flow Modeling</div>
+        <div class="cert-meta">
+          <span class="cert-date">Jan 30, 2026</span>
+          <span class="cert-grade grade-80">80%</span>
+        </div>
+        <button class="cert-preview-btn" onclick="toggleCert('cert-dcf')">View certificate ↓</button>
+        <div class="cert-preview" id="cert-dcf">
+          <img src="/mnt/user-data/uploads/Screenshot_2026-03-15_at_6_35_38_PM.png" alt="DCF Modeling Certificate" style="width:100%;display:block;border:1px solid var(--border);" onerror="this.parentElement.innerHTML='<div class=cert-img-placeholder><span>Coursera · Discounted Cash Flow Modeling</span><span style=color:var(--muted);font-size:10px>Completed by Manit Bhasin · Jan 30, 2026 · Grade: 80%</span></div>'">
+        </div>
+      </div>
+    </div>
+
+    <div class="cert-card">
+      <div class="cert-icon">✓</div>
+      <div class="cert-body">
+        <div class="cert-platform">Outskill · Certificate of Completion</div>
+        <div class="cert-name">Generative AI Mastermind</div>
+        <div class="cert-meta">
+          <span class="cert-date">2026</span>
+          <span class="cert-grade grade-100">Completed</span>
+        </div>
+        <button class="cert-preview-btn" onclick="toggleCert('cert-ai')">View certificate ↓</button>
+        <div class="cert-preview" id="cert-ai">
+          <img src="/mnt/user-data/uploads/Screenshot_2026-03-15_at_7_05_53_PM.png" alt="Outskill Generative AI Certificate" style="width:100%;display:block;border:1px solid var(--border);" onerror="this.parentElement.innerHTML='<div class=cert-img-placeholder><span>Outskill · Generative AI Mastermind</span><span style=color:var(--muted);font-size:10px>Completed by Manit Bhasin · Issued by Vaibhav Sisinty, Founder</span></div>'">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="sh r"><span class="sn">03</span><h2 class="st">About</h2><div class="sr"></div></div>
+  <div class="about-inner r">
+    <p class="ap"><strong>Manit Bhasin</strong>. Grade 11, IB Diploma Programme, India.</p>
+    <p class="ap">Interested in quantitative finance and economics — specifically how financial models are constructed and whether they hold up against real data. Most of my projects start from a question I can't find a clean answer to.</p>
+    <p class="ap">Aiming for <strong>UPenn</strong> with the goal of working in <strong>quantitative research or investment banking</strong>.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="sh r"><span class="sn">04</span><h2 class="st">Contact</h2><div class="sr"></div></div>
+  <div class="cgrid">
+    <div class="r">
+      <div class="cbig">Let's<br>talk<span>.</span></div>
+      <p class="csub">Whether it's a collaboration, an opportunity, or a conversation about markets and models — I'm open.</p>
+    </div>
+    <div class="crows r">
+      <a href="mailto:manitbhasin6@gmail.com" class="crow"><div><div class="cr-p">email</div><div class="cr-v">manitbhasin6@gmail.com</div></div><span class="arr">↗</span></a>
+      <a href="https://www.linkedin.com/in/manit-bhasin-604656290/" class="crow" target="_blank"><div><div class="cr-p">linkedin</div><div class="cr-v">linkedin.com/in/manit-bhasin</div></div><span class="arr">↗</span></a>
+      <a href="https://github.com/manitbhasin6-commits" class="crow" target="_blank"><div><div class="cr-p">github</div><div class="cr-v">github.com/manitbhasin6-commits</div></div><span class="arr">↗</span></a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 <b>Manit Bhasin</b></div>
+  <div>India · IBDP</div>
+</footer>
+
+<script>
+// Cursor
+const cur=document.getElementById('cur'),cr=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function a(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button,.pc,.chip,.cert-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.width='9px';cur.style.height='9px';cr.style.width='34px';cr.style.height='34px';cr.style.opacity='.5';});
+  el.addEventListener('mouseleave',()=>{cur.style.width='5px';cur.style.height='5px';cr.style.width='24px';cr.style.height='24px';cr.style.opacity='.25';});
+});
+
+// Card glow
+document.querySelectorAll('.pc').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    card.style.setProperty('--mx',(e.clientX-r.left)+'px');
+    card.style.setProperty('--my',(e.clientY-r.top)+'px');
+  });
+});
+
+// Reveal
+const obs=new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('on');obs.unobserve(x.target);}}),{threshold:.06});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
+
+// Nav active
+const secs=document.querySelectorAll('section[id]'),navAs=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-100)c=s.id;});navAs.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+c));});
+
+// Toggle explainer
+function toggle(btn){const b=btn.nextElementSibling;const o=b.classList.toggle('open');btn.classList.toggle('open',o);}
+
+// Toggle cert preview
+function toggleCert(id){
+  const el=document.getElementById(id);
+  const btn=el.previousElementSibling;
+  const open=el.classList.toggle('open');
+  btn.textContent=open?'Hide certificate ↑':'View certificate ↓';
+}
+
+// IST clock
+function tick(){
+  const ist=new Date(new Date().toLocaleString('en-US',{timeZone:'Asia/Kolkata'}));
+  const pad=n=>String(n).padStart(2,'0');
+  const el=document.getElementById('navtime');
+  if(el) el.textContent=`IST ${pad(ist.getHours())}:${pad(ist.getMinutes())}:${pad(ist.getSeconds())}`;
+}
+setInterval(tick,1000); tick();
+
+// Ticker — more items, bigger
+const tickers=[
+  {sym:'SPY',val:'592.34',chg:'+0.84%',up:true},
+  {sym:'QQQ',val:'487.21',chg:'+1.12%',up:true},
+  {sym:'AAPL',val:'211.45',chg:'-0.33%',up:false},
+  {sym:'MSFT',val:'428.90',chg:'+0.67%',up:true},
+  {sym:'NVDA',val:'138.75',chg:'+2.41%',up:true},
+  {sym:'GOOGL',val:'172.40',chg:'+0.91%',up:true},
+  {sym:'META',val:'584.22',chg:'+1.34%',up:true},
+  {sym:'BRK.B',val:'472.10',chg:'+0.18%',up:true},
+  {sym:'TSLA',val:'248.32',chg:'-1.05%',up:false},
+  {sym:'JPM',val:'246.88',chg:'+0.52%',up:true},
+  {sym:'GS',val:'591.44',chg:'+0.29%',up:true},
+  {sym:'MS',val:'128.74',chg:'+0.44%',up:true},
+  {sym:'BAC',val:'44.21',chg:'-0.18%',up:false},
+  {sym:'BTC',val:'83,241',chg:'+1.88%',up:true},
+  {sym:'ETH',val:'1,924',chg:'+2.11%',up:true},
+  {sym:'GOLD',val:'2,987',chg:'+0.44%',up:true},
+  {sym:'WTI',val:'68.12',chg:'-0.77%',up:false},
+  {sym:'10Y',val:'4.31%',chg:'-0.03',up:false},
+  {sym:'2Y',val:'4.02%',chg:'-0.01',up:false},
+  {sym:'DXY',val:'103.42',chg:'-0.21%',up:false},
+  {sym:'VIX',val:'18.74',chg:'-0.92%',up:false},
+  {sym:'NIFTY',val:'22,508',chg:'+0.38%',up:true},
+  {sym:'SENSEX',val:'74,119',chg:'+0.41%',up:true},
+];
+const track=document.getElementById('ticker');
+track.innerHTML=[...tickers,...tickers].map(t=>`<div class="tick-item"><span class="tick-sym">${t.sym}</span><span class="tick-val">${t.val}</span><span class="tick-chg ${t.up?'up':'dn'}">${t.chg}</span></div>`).join('');
+
+// Particles
+const pc=document.getElementById('particles');
+for(let i=0;i<22;i++){
+  const p=document.createElement('div');
+  p.className='p';
+  p.style.cssText=`left:${Math.random()*100}%;--d:${7+Math.random()*10}s;--delay:${Math.random()*10}s;--dx:${(Math.random()-.5)*60}px;`;
+  pc.appendChild(p);
+}
+</script>
+</body>
+</html>
