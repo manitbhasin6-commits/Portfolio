@@ -311,7 +311,7 @@ footer b{color:var(--accent);font-weight:400;}
     <span class="chip">DCF Valuation</span>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n" data-target="9">0</div><div class="hstat-l">projects live</div></div>
+    <div class="hstat"><div class="hstat-n" data-target="10">0</div><div class="hstat-l">projects live</div></div>
     <div class="hstat"><div class="hstat-n" data-target="3">0</div><div class="hstat-l">certifications</div></div>
   </div>
   <div class="hscroll">scroll ↓</div>
@@ -706,6 +706,50 @@ footer b{color:var(--accent);font-weight:400;}
             <div class="math-block">
               <div class="mrow"><span class="msym" style="color:#c084fc">Sharpe = (Rp − Rf) / σp</span><span class="mdef">Return above risk-free rate, divided by portfolio volatility. Higher is better.</span></div>
               <div class="mrow"><span class="msym" style="color:#c084fc">Maximise: Sharpe(w)</span><span class="mdef">Subject to Σwᵢ = 1, wᵢ ≥ 0. Solved via Monte Carlo random search across thousands of weight combinations.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT 10: MARKETPULSE -->
+    <div class="pc r" style="--ca:var(--green)">
+      <div class="pc-top">
+        <div class="pc-tag">AI · Market Intelligence · Full-Stack</div>
+        <div class="pc-idx">010</div>
+        <h3 class="pc-title">MarketPulse — AI Market Intelligence</h3>
+        <p class="pc-desc">A full market intelligence platform with four modules: a live dashboard with real-time price simulation across 13 assets, an AI analysis engine powered by Claude that generates institutional-grade stock analysis on any ticker, a smart alerts system for price and signal-based triggers, and a clean landing page. Every design decision matches the terminal aesthetic of this portfolio.</p>
+        <p class="pc-oneliner">Bloomberg Terminal meets Claude — type a ticker, get an analyst's view in seconds.</p>
+        <div class="tags"><span class="tag">Claude API</span><span class="tag">Market Data</span><span class="tag">AI Analysis</span><span class="tag">Live Dashboard</span><span class="tag">Alerts</span><span class="tag">Vanilla JS</span></div>
+      </div>
+      <div class="pc-links">
+        <a class="plink" style="--ca:var(--green)" href="https://manitbhasin6-commits.github.io/Market-Pulse-AI-Stock-Analysis/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live demo</a>
+        <a class="plink" style="--ca:var(--green)" href="https://github.com/manitbhasin6-commits/Market-Pulse-AI-Stock-Analysis" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:var(--green);color:var(--green)">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:var(--green)"><span>How it works — plain English + the maths</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:var(--green)">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--accent)">Plain English — what this actually is</div>
+            <div class="exp-txt">
+              <p>Most retail investors either get overwhelming data terminals (Bloomberg, Reuters) or dumbed-down apps with no real analysis. MarketPulse sits in the middle — a clean, fast interface that shows live market data and lets you ask Claude to analyse any stock like an institutional analyst would.</p>
+              <p>The AI analysis uses Claude's actual reasoning to generate bull cases, bear cases, risk assessments, and technical reads — not pre-written templates. Every analysis is generated fresh for the ticker you enter.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--accent)">The four modules</div>
+            <div class="steps">
+              <div class="step"><span class="step-n" style="color:var(--accent)">01</span><span class="step-txt"><strong>Live Dashboard</strong> — 6 market metrics updating every 2.5 seconds (S&P, NASDAQ, VIX, Gold, BTC, 10Y yield). Price chart for 4 assets. Watchlist with sparklines. News feed with sentiment tags.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--accent)">02</span><span class="step-txt"><strong>AI Analysis</strong> — Enter any ticker and choose: Full Analysis, Bull Case, Bear Case, Technical, or Risk Assessment. Claude generates structured analysis with headers, signals, and a BUY/HOLD/SELL recommendation. Sentiment gauge and key stats sidebar.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--accent)">03</span><span class="step-txt"><strong>Smart Alerts</strong> — Create price-above, price-below, % change, volume spike, or AI sentiment shift alerts. Alerts auto-trigger against live prices and show ACTIVE/TRIGGERED status.</span></div>
+              <div class="step"><span class="step-n" style="color:var(--accent)">04</span><span class="step-txt"><strong>Landing Page</strong> — Live ticker tape across 13 assets, feature overview, call-to-action — designed as a real SaaS product homepage.</span></div>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--accent)">Technical note</div>
+            <div class="exp-txt">
+              <p>Market data is simulated with realistic GBM-based price drift. The AI analysis calls Claude's API directly — in a production deployment this would require a backend proxy for API key security. The architecture mirrors real market data products: live feed layer, analysis layer, alert engine.</p>
             </div>
           </div>
         </div>
