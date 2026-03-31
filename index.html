@@ -52,36 +52,75 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:cen
 
 /* HERO */
 #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:100px 52px 80px;position:relative;overflow:hidden;}
-.gbg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:52px 52px;mask-image:radial-gradient(ellipse 100% 80% at 50% 100%,black 0%,transparent 100%);transition:transform .1s ease-out;}
-.orb{position:absolute;top:-10%;right:-5%;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(181,245,66,.07) 0%,rgba(181,245,66,.02) 40%,transparent 70%);pointer-events:none;animation:orbpulse 6s ease-in-out infinite;transition:transform .15s ease-out;}
-.orb2{position:absolute;bottom:5%;left:-8%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(66,217,245,.05) 0%,transparent 65%);pointer-events:none;animation:orbpulse 8s ease-in-out infinite reverse;transition:transform .15s ease-out;}
-@keyframes orbpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:.65}}
+
+/* 3D perspective grid — vanishing point at bottom */
+.gbg{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(181,245,66,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(181,245,66,.04) 1px,transparent 1px);
+  background-size:52px 52px;
+  transform:perspective(600px) rotateX(20deg) scaleY(1.4) translateY(10%);
+  transform-origin:bottom center;
+  mask-image:linear-gradient(to top,black 0%,black 40%,transparent 100%);
+  transition:transform .1s ease-out;
+  animation:gridfloat 12s ease-in-out infinite;}
+@keyframes gridfloat{0%,100%{background-position:0 0}50%{background-position:0 52px}}
+
+/* Vibrant multi-colour orbs */
+.orb{position:absolute;top:-15%;right:-8%;width:800px;height:800px;border-radius:50%;
+  background:radial-gradient(circle,rgba(181,245,66,.1) 0%,rgba(66,217,245,.06) 35%,rgba(192,132,252,.03) 60%,transparent 75%);
+  pointer-events:none;animation:orbpulse 7s ease-in-out infinite;transition:transform .15s ease-out;
+  filter:blur(1px);}
+.orb2{position:absolute;bottom:0%;left:-10%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(66,217,245,.08) 0%,rgba(181,245,66,.04) 40%,transparent 70%);
+  pointer-events:none;animation:orbpulse 9s ease-in-out infinite reverse;transition:transform .15s ease-out;
+  filter:blur(1px);}
+.orb3{position:absolute;top:30%;left:35%;width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(192,132,252,.06) 0%,rgba(245,167,66,.03) 50%,transparent 70%);
+  pointer-events:none;animation:orbpulse 11s ease-in-out infinite 2s;filter:blur(2px);}
+@keyframes orbpulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.12);opacity:.7}}
+
+/* Scanline — already in body::after */
 .particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
 .p{position:absolute;width:1px;height:1px;background:var(--accent);border-radius:50%;opacity:0;animation:pfloat var(--d,8s) var(--delay,0s) infinite;}
-@keyframes pfloat{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.4}90%{opacity:.1}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx,20px))}}
+@keyframes pfloat{0%{opacity:0;transform:translateY(100vh)}10%{opacity:.5}90%{opacity:.1}100%{opacity:0;transform:translateY(-20px) translateX(var(--dx,20px))}}
 
-/* Noise overlay on hero */
-.hero-noise{position:absolute;inset:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:256px;}
+/* Noise */
+.hero-noise{position:absolute;inset:0;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:256px;}
 
-/* Mouse-tracking gradient spotlight */
-.hero-spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(181,245,66,.04),transparent 55%);transition:background .05s;}
+/* Spotlight — bigger, more vibrant */
+.hero-spotlight{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(700px circle at var(--mx,50%) var(--my,50%),rgba(181,245,66,.055),rgba(66,217,245,.02) 40%,transparent 60%);
+  transition:background .04s;}
+
+/* Horizon glow line */
+.hero-horizon{position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(181,245,66,.3) 20%,rgba(66,217,245,.4) 50%,rgba(192,132,252,.3) 80%,transparent);
+  animation:horizonglow 4s ease-in-out infinite;}
+@keyframes horizonglow{0%,100%{opacity:.4}50%{opacity:1}}
 
 .eyebrow{font-size:10px;color:var(--accent);letter-spacing:.16em;margin-bottom:16px;opacity:0;animation:up .5s .1s forwards;}
 .eyebrow::before{content:'> ';}
+
+/* Name — 3D depth effect */
 .hname{font-family:var(--sans);font-size:clamp(48px,8.5vw,118px);font-weight:800;line-height:.86;letter-spacing:-3.5px;opacity:0;animation:up .65s .22s forwards;}
 .hname .d{color:var(--muted);font-weight:400;}
+
 .hdesc{max-width:460px;margin-top:26px;font-size:13px;color:var(--muted);line-height:1.95;opacity:0;animation:up .65s .38s forwards;}
 .hchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px;opacity:0;animation:up .65s .5s forwards;}
-.chip{font-size:10px;padding:4px 11px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.07em;transition:border-color .2s,color .2s,transform .2s;}
-.chip:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
+.chip{font-size:10px;padding:4px 11px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.07em;transition:all .25s;position:relative;overflow:hidden;}
+.chip::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-100%);transition:transform .25s;z-index:0;}
+.chip span{position:relative;z-index:1;}
+.chip:hover{border-color:var(--accent);color:#080808;transform:translateY(-2px);}
+.chip:hover::before{transform:translateX(0);}
 .hscroll{position:absolute;bottom:36px;right:52px;font-size:10px;color:var(--muted);writing-mode:vertical-rl;letter-spacing:.12em;opacity:0;animation:up .5s .68s forwards;}
-/* Typewriter cursor removed */
 .hname-first{display:inline-block;}
 .hname-second{display:block;color:var(--muted);font-weight:400;}
-.hero-stats{display:flex;gap:40px;margin-top:40px;opacity:0;animation:up .65s .62s forwards;}
-.hstat{display:flex;flex-direction:column;gap:3px;}
-.hstat-n{font-family:var(--sans);font-size:28px;font-weight:800;color:var(--accent);line-height:1;}
+
+/* Stats — more vibrant with colour coding */
+.hero-stats{display:flex;gap:0;margin-top:44px;opacity:0;animation:up .65s .62s forwards;border:1px solid var(--border);background:var(--border);gap:1px;}
+.hstat{display:flex;flex-direction:column;gap:3px;padding:14px 22px;background:rgba(8,8,8,.8);backdrop-filter:blur(8px);}
+.hstat-n{font-family:var(--sans);font-size:28px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hstat-l{font-size:10px;color:var(--muted);letter-spacing:.08em;}
+
 @keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 
 /* SECTIONS */
@@ -109,17 +148,7 @@ section{padding:88px 52px;border-top:1px solid var(--border);}
 .rl-mod-title{font-size:11px;color:var(--text);font-weight:500;}
 .rl-mod-desc{font-size:10px;color:var(--muted);line-height:1.4;margin-top:2px;}
 
-/* NAME WOW — shimmer + split */
-.hname{font-family:var(--sans);font-size:clamp(48px,8.5vw,118px);font-weight:800;line-height:.86;letter-spacing:-3.5px;opacity:0;animation:up .65s .22s forwards;}
-.hname-line1{display:block;position:relative;}
-.hname-line2{display:block;color:var(--muted);font-weight:400;position:relative;}
-.hname-line1::after{content:'Manit';position:absolute;left:0;top:0;background:linear-gradient(90deg,transparent 0%,rgba(181,245,66,.18) 50%,transparent 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200% 100%;animation:shimmer 3.5s ease-in-out infinite 1.5s;}
-@keyframes shimmer{0%,100%{background-position:-200% 0}50%{background-position:200% 0}}
-.search-wrap{display:flex;align-items:center;gap:0;border:1px solid var(--border-b);background:var(--bg2);max-width:320px;margin-bottom:52px;}
-.search-icon{padding:0 12px;color:var(--muted);font-size:14px;flex-shrink:0;}
-.search-inp{background:none;border:none;color:var(--text);font-family:var(--mono);font-size:12px;padding:10px 0;width:100%;outline:none;letter-spacing:.04em;}
-.search-inp::placeholder{color:var(--muted);}
-.pc.hidden{display:none;}
+
 
 /* PROJECTS */
 .pgrid{display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);}
@@ -261,6 +290,85 @@ footer b{color:var(--accent);font-weight:400;}
 .ml-btn{background:var(--accent);border:none;color:#080808;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:9px 20px;cursor:pointer;letter-spacing:.06em;text-decoration:none;display:inline-block;transition:opacity .2s;}
 .ml-btn:hover{opacity:.85;}
 @media(max-width:900px){.museum-grid{grid-template-columns:1fr;}.museum-link-row{padding:16px 18px;flex-direction:column;gap:10px;align-items:flex-start;}}
+
+/* ── SEARCH BAR ── */
+.search-wrap{display:flex;align-items:center;gap:0;border:1px solid var(--border-b);background:var(--bg2);max-width:380px;margin-bottom:52px;transition:border-color .2s;}
+.search-wrap:focus-within{border-color:var(--accent);}
+.search-icon{padding:0 14px;color:var(--muted);font-size:15px;flex-shrink:0;}
+.search-inp{background:none;border:none;color:var(--text);font-family:var(--mono);font-size:12px;padding:12px 0;width:100%;outline:none;letter-spacing:.04em;}
+.search-inp::placeholder{color:var(--muted);font-style:italic;}
+.search-clear{padding:0 12px;color:var(--muted);cursor:pointer;font-size:16px;flex-shrink:0;display:none;transition:color .2s;}
+.search-clear:hover{color:var(--accent);}
+.search-count{padding:0 14px;font-size:10px;color:var(--muted);white-space:nowrap;flex-shrink:0;}
+.pc.hidden{display:none !important;}
+.no-results{padding:40px;text-align:center;color:var(--muted);font-size:12px;display:none;}
+.no-results.show{display:block;}
+
+/* ── EXPLAINER — smooth height animation ── */
+.exp-body{
+  max-height:0;
+  overflow:hidden;
+  opacity:0;
+  padding:0 40px;
+  border-top:0px solid var(--border);
+  background:var(--bg3);
+  transition:max-height .45s cubic-bezier(.4,0,.2,1),opacity .35s ease,padding .35s ease,border-top-width .35s ease;
+}
+.exp-body.open{
+  max-height:1200px;
+  opacity:1;
+  padding:28px 40px 36px;
+  border-top:1px solid var(--border);
+}
+.exp-arrow{display:inline-block;transition:transform .35s cubic-bezier(.4,0,.2,1);}
+.exp-toggle.open .exp-arrow{transform:rotate(180deg);}
+
+/* ── 3D HERO ENHANCEMENTS ── */
+#hero{perspective:1200px;}
+.gbg{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(181,245,66,.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(181,245,66,.045) 1px,transparent 1px);
+  background-size:52px 52px;
+  transform:perspective(800px) rotateX(22deg) scaleY(1.5) translateY(8%);
+  transform-origin:bottom center;
+  mask-image:linear-gradient(to top,black 0%,black 35%,transparent 100%);
+  animation:gridfloat 14s ease-in-out infinite;
+}
+@keyframes gridfloat{0%,100%{background-position:0 0}50%{background-position:0 52px}}
+.orb{position:absolute;top:-15%;right:-8%;width:820px;height:820px;border-radius:50%;background:radial-gradient(circle,rgba(181,245,66,.11) 0%,rgba(66,217,245,.065) 35%,rgba(192,132,252,.03) 60%,transparent 75%);pointer-events:none;animation:orbpulse 7s ease-in-out infinite;filter:blur(1px);}
+.orb2{position:absolute;bottom:-5%;left:-10%;width:620px;height:620px;border-radius:50%;background:radial-gradient(circle,rgba(66,217,245,.09) 0%,rgba(181,245,66,.04) 40%,transparent 70%);pointer-events:none;animation:orbpulse 9s ease-in-out infinite reverse;filter:blur(1px);}
+.orb3{position:absolute;top:25%;left:32%;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(192,132,252,.065) 0%,rgba(245,167,66,.025) 50%,transparent 70%);pointer-events:none;animation:orbpulse 11s ease-in-out infinite 2s;filter:blur(2px);}
+.hero-horizon{position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(181,245,66,.35) 20%,rgba(66,217,245,.45) 50%,rgba(192,132,252,.35) 80%,transparent);animation:horizonglow 4s ease-in-out infinite;}
+@keyframes horizonglow{0%,100%{opacity:.35}50%{opacity:1}}
+.hero-spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(700px circle at var(--mx,50%) var(--my,50%),rgba(181,245,66,.06),rgba(66,217,245,.025) 40%,transparent 60%);transition:background .04s;}
+
+/* Hero stats as glassy strip */
+.hero-stats{display:flex;gap:1px;margin-top:44px;opacity:0;animation:up .65s .62s forwards;background:var(--border);}
+.hstat{display:flex;flex-direction:column;gap:3px;padding:14px 24px;background:rgba(8,8,8,.75);backdrop-filter:blur(12px);}
+.hstat-n{font-family:var(--sans);font-size:28px;font-weight:800;line-height:1;background:linear-gradient(135deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hstat-l{font-size:10px;color:var(--muted);letter-spacing:.08em;}
+
+/* Chip fill on hover */
+.chip{font-size:10px;padding:4px 12px;border:1px solid var(--border-b);color:var(--muted);letter-spacing:.07em;transition:all .25s;position:relative;overflow:hidden;cursor:default;}
+.chip::before{content:'';position:absolute;inset:0;background:var(--accent);transform:translateX(-101%);transition:transform .28s cubic-bezier(.4,0,.2,1);z-index:0;}
+.chip span{position:relative;z-index:1;transition:color .25s;}
+.chip:hover{border-color:var(--accent);transform:translateY(-2px);}
+.chip:hover::before{transform:translateX(0);}
+.chip:hover span{color:#080808;}
+
+/* Museum link row */
+.museum-link-row{padding:20px 52px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:var(--bg2);}
+.ml-text{font-size:11px;color:var(--muted);}
+.ml-text strong{color:var(--text);}
+.ml-btn{background:var(--accent);border:none;color:#080808;font-family:var(--mono);font-size:11px;font-weight:700;padding:9px 20px;cursor:pointer;letter-spacing:.06em;text-decoration:none;display:inline-block;transition:opacity .2s;}
+.ml-btn:hover{opacity:.85;}
+
+/* Bloomberg card mouse glow */
+.pc-bloomberg::after{content:'';position:absolute;inset:0;background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(245,167,66,.06),transparent 40%);opacity:0;transition:opacity .3s;pointer-events:none;}
+.pc-bloomberg:hover::after{opacity:1;}
+
+@media(max-width:900px){.museum-link-row{padding:16px 18px;flex-direction:column;gap:10px;align-items:flex-start;}}
 </style>
 </head>
 <body>
@@ -298,20 +406,22 @@ footer b{color:var(--accent);font-weight:400;}
   <div class="orb2" id="orb2"></div>
   <div class="hero-noise"></div>
   <div class="hero-spotlight" id="spotlight"></div>
+  <div class="orb3"></div>
+  <div class="hero-horizon"></div>
   <div class="particles" id="particles"></div>
   <div class="eyebrow">IB Diploma · Grade 11 · India</div>
   <h1 class="hname"><span class="hname-line1">Manit</span><span class="hname-line2">Bhasin</span></h1>
   <p class="hdesc">Building quantitative finance models and AI tools for equity research. Interested in how financial theory holds up against real data.</p>
   <div class="hchips">
-    <span class="chip">Financial Modelling</span>
-    <span class="chip">Econometrics</span>
-    <span class="chip">Hidden Markov Models</span>
-    <span class="chip">AI Tools</span>
-    <span class="chip">Equity Research</span>
-    <span class="chip">DCF Valuation</span>
+    <span class="chip"><span>Financial Modelling</span></span>
+    <span class="chip"><span>Econometrics</span></span>
+    <span class="chip"><span>Hidden Markov Models</span></span>
+    <span class="chip"><span>AI Tools</span></span>
+    <span class="chip"><span>Equity Research</span></span>
+    <span class="chip"><span>DCF Valuation</span></span>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><div class="hstat-n" data-target="10">0</div><div class="hstat-l">projects live</div></div>
+    <div class="hstat"><div class="hstat-n" data-target="11">0</div><div class="hstat-l">projects live</div></div>
     <div class="hstat"><div class="hstat-n" data-target="3">0</div><div class="hstat-l">certifications</div></div>
   </div>
   <div class="hscroll">scroll ↓</div>
@@ -322,9 +432,9 @@ footer b{color:var(--accent);font-weight:400;}
   <div class="sh r"><span class="sn">01</span><h2 class="st">Projects</h2><div class="sr"></div></div>
   <div class="search-wrap r">
     <span class="search-icon">⌕</span>
-    <input class="search-inp" id="proj-search" placeholder="Search projects..." oninput="searchProjects(this.value)">
+    <span class="search-icon">⌕</span><input class="search-inp" id="proj-search" placeholder="Search projects — try 'monte carlo', 'risk', 'AI'..." oninput="searchProjects(this.value)"><span class="search-clear" id="search-clear" onclick="document.getElementById('proj-search').value='';searchProjects('')">×</span><span class="search-count" id="search-count"></span>
   </div>
-  <div class="pgrid">
+  <div class="pgrid"><div class="no-results" id="no-results">No projects match that search.</div>
 
     <!-- PROJECT 1: REGIME ENGINE -->
     <div class="pc r" style="--ca:var(--accent)">
@@ -755,6 +865,66 @@ footer b{color:var(--accent);font-weight:400;}
         </div>
       </div>
     </div>
+    <!-- PROJECT 10: BLOOMBERG TERMINAL -->
+    <div class="pc pc-bloomberg r" style="--ca:var(--amber)">
+      <div class="bb-accent"></div>
+      <div class="pc-top">
+        <div class="bb-badge"><div class="bb-badge-dot"></div>India Markets · Live Data · NSE · Real-Time</div>
+        <div class="pc-idx" style="color:var(--amber)">011</div>
+        <h3 class="pc-title" style="background:linear-gradient(135deg,var(--amber) 0%,var(--red) 50%,var(--purple) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Boomberg Terminal</h3>
+        <p class="pc-desc">A full Indian market terminal modelled after Bloomberg — live NIFTY 50, SENSEX, BANK NIFTY, and NIFTY IT feeds, real-time candlestick charts with EMA overlays, live order book, sector heatmap, active trading strategies with signals, geopolitical intelligence feed, and Zerodha Kite Connect integration. Built entirely in vanilla JS.</p>
+        <p class="pc-oneliner" style="border-left-color:var(--amber)">A Bloomberg Terminal for Indian markets — because real data shouldn't require a $24,000/year subscription.</p>
+        <div class="bb-modules">
+          <div class="bb-mod"><div class="bb-mod-n" style="color:var(--amber)">Live Data</div><div class="bb-mod-title">Market Feed</div><div class="bb-mod-desc">NIFTY · SENSEX · BANK NIFTY · FII/DII flows</div></div>
+          <div class="bb-mod"><div class="bb-mod-n" style="color:var(--blue)">Charts</div><div class="bb-mod-title">Technical</div><div class="bb-mod-desc">Candlestick · EMA · RSI · Bollinger · ADX</div></div>
+          <div class="bb-mod"><div class="bb-mod-n" style="color:var(--accent)">Strategies</div><div class="bb-mod-title">Signals</div><div class="bb-mod-desc">6 active strategies · Entry/Target/Stop · Win probability</div></div>
+          <div class="bb-mod"><div class="bb-mod-n" style="color:var(--purple)">Execution</div><div class="bb-mod-title">Order Book</div><div class="bb-mod-desc">Bid/ask depth · Zerodha Kite Connect integration</div></div>
+        </div>
+        <div class="bb-pills">
+          <span class="bb-pill" style="border-color:rgba(245,167,66,.4);color:var(--amber)">NSE Live</span>
+          <span class="bb-pill" style="border-color:rgba(66,217,245,.4);color:var(--blue)">Candlestick Charts</span>
+          <span class="bb-pill" style="border-color:rgba(181,245,66,.4);color:var(--accent)">EMA Signals</span>
+          <span class="bb-pill" style="border-color:rgba(245,95,95,.4);color:var(--red)">Order Book</span>
+          <span class="bb-pill" style="border-color:rgba(192,132,252,.4);color:var(--purple)">Sector Heatmap</span>
+          <span class="bb-pill" style="border-color:rgba(245,167,66,.3);color:var(--amber)">Zerodha Kite</span>
+          <span class="bb-pill" style="border-color:rgba(255,255,255,.15);color:var(--muted)">Vanilla JS</span>
+        </div>
+      </div>
+      <div <div class="pc-links">
+        <a class="plink" style="--ca:var(--amber)" href="https://manitbhasin6-commits.github.io/Boomberg-Terminal/" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Live terminal</a>
+        <a class="plink" style="--ca:var(--amber)" href="https://github.com/manitbhasin6-commits/Boomberg-Terminal" target="_blank"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>GitHub</a>
+        <span class="live-badge" style="border-color:var(--amber);color:var(--amber)">LIVE</span>
+      </div>
+      <div class="explainer">
+        <button class="exp-toggle" onclick="toggle(this)" style="--ca:var(--amber)"><span>How it works — plain English + what's inside</span><i class="exp-arrow">↓</i></button>
+        <div class="exp-body" style="--ca:var(--amber)">
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">What this actually is</div>
+            <div class="exp-txt">
+              <p>Bloomberg Terminal costs $24,000 a year. It's the gold standard for professional traders — live data, charts, analytics, news, and execution all in one place. This is a full recreation of that experience for Indian markets, built in vanilla JS, free to use, deployed on GitHub Pages.</p>
+              <p>Every piece of data you see — NIFTY prices, order book depth, FII/DII flows, strategy signals — updates in real time. The charting engine handles multiple timeframes (1m to 1D) with full technical indicator overlays.</p>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">What's inside</div>
+            <div class="math-block">
+              <div class="mrow"><span class="msym" style="color:var(--amber)">Live Market Feed</span><span class="mdef">NIFTY 50, SENSEX, BANK NIFTY, NIFTY IT — prices, % change, FII/DII institutional flows updated live.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--blue)">Technical Charts</span><span class="mdef">Candlestick charts with EMA (9/21/50), Bollinger Bands, RSI, ADX across 6 timeframes. Switchable between 5 major Indian stocks.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--accent)">Strategy Signals</span><span class="mdef">6 active algorithmic strategies (EMA Crossover, Bollinger Squeeze, RSI Divergence etc.) with live entry, target, stop loss, risk-reward ratio and win probability.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--red)">Order Book</span><span class="mdef">Live bid/ask depth for NIFTY 50 with spread, volume, and last traded price. Real market microstructure.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--purple)">Sector Heatmap</span><span class="mdef">12 Nifty 50 constituents colour-coded by % change — green for gainers, red for losers.</span></div>
+              <div class="mrow"><span class="msym" style="color:var(--amber)">Zerodha Integration</span><span class="mdef">Order placement interface connected to Zerodha Kite Connect API — buy/sell directly from the terminal.</span></div>
+            </div>
+          </div>
+          <div class="exp-sec">
+            <div class="exp-lbl" style="color:var(--amber)">Why I built it</div>
+            <div class="exp-txt">
+              <p>During my internship at Phoenix Investments I used professional trading terminals every day. Coming back to school and not having access to that tooling was frustrating. So I built my own — designed specifically for the Indian market, with the indicators and data flows that actually matter for NSE trading.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
 
   </div>
@@ -928,7 +1098,7 @@ footer b{color:var(--accent);font-weight:400;}
       <p class="csub">Whether it's a collaboration, an opportunity, or a conversation about markets and models — I'm open.</p>
     </div>
     <div class="crows r">
-      <a href="mailto:manitbhasin6@gmail.com" class="crow"><div><div class="cr-p">email</div><div class="cr-v">manitbhasin6@gmail.com</div></div><span class="arr">↗</span></a>
+      <a href="/cdn-cgi/l/email-protection#95f8f4fbfce1f7fdf4e6fcfba3d5f2f8f4fcf9bbf6faf8" class="crow"><div><div class="cr-p">email</div><div class="cr-v"><span class="__cf_email__" data-cfemail="5a373b34332e38323b2933346c1a3d373b333674393537">[email&#160;protected]</span></div></div><span class="arr">↗</span></a>
       <a href="https://www.linkedin.com/in/manit-bhasin-604656290/" class="crow" target="_blank"><div><div class="cr-p">linkedin</div><div class="cr-v">linkedin.com/in/manit-bhasin</div></div><span class="arr">↗</span></a>
       <a href="https://github.com/manitbhasin6-commits" class="crow" target="_blank"><div><div class="cr-p">github</div><div class="cr-v">github.com/manitbhasin6-commits</div></div><span class="arr">↗</span></a>
     </div>
@@ -940,7 +1110,7 @@ footer b{color:var(--accent);font-weight:400;}
   <div>India · IBDP</div>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Cursor
 const cur=document.getElementById('cur'),cr=document.getElementById('cur-r');
 let mx=0,my=0,rx=0,ry=0;
@@ -998,10 +1168,19 @@ document.querySelectorAll('.hstat-n[data-target]').forEach(el=>{
 // Search projects
 function searchProjects(q){
   const term=q.toLowerCase().trim();
-  document.querySelectorAll('.pc').forEach(card=>{
-    const text=card.textContent.toLowerCase();
-    card.classList.toggle('hidden',term!==''&&!text.includes(term));
+  const cards=document.querySelectorAll('.pc');
+  let visible=0;
+  cards.forEach(card=>{
+    const match=term===''||card.textContent.toLowerCase().includes(term);
+    card.classList.toggle('hidden',!match);
+    if(match) visible++;
   });
+  const count=document.getElementById('search-count');
+  const clear=document.getElementById('search-clear');
+  const noRes=document.getElementById('no-results');
+  if(count) count.textContent=term?visible+' result'+(visible!==1?'s':''):'';
+  if(clear) clear.style.display=term?'block':'none';
+  if(noRes) noRes.classList.toggle('show',visible===0&&term!=='');
 }
 
 // ── MUSEUM SIMULATIONS ─────────────────────────────────────────────────────
@@ -1199,10 +1378,12 @@ track.innerHTML=[...tickers,...tickers].map(t=>`<div class="tick-item"><span cla
 // Particles
 const pc=document.getElementById('particles');
 for(let i=0;i<22;i++){
-  const p=document.createElement('div');p.className='p';
-  p.style.cssText=`left:${Math.random()*100}%;--d:${7+Math.random()*10}s;--delay:${Math.random()*10}s;--dx:${(Math.random()-.5)*60}px;`;
+  const p=document.createElement('div');
+  p.className='p';
+  p.style.cssText=`left:${Math.random()*100}%;--d:${6+Math.random()*10}s;--delay:${Math.random()*8}s;--dx:${(Math.random()-.5)*60}px`;
   pc.appendChild(p);
 }
+
 </script>
 </body>
 </html>
